@@ -3,11 +3,15 @@ package com.myself.spider;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
+import us.codecraft.webmagic.pipeline.ConsolePipeline;
+import us.codecraft.webmagic.pipeline.FilePipeline;
+import us.codecraft.webmagic.pipeline.JsonFilePipeline;
 import us.codecraft.webmagic.processor.PageProcessor;
 
 public class PixivProcessor implements PageProcessor {
     // 部分一：抓取网站的相关配置，包括编码、抓取间隔(1秒)、重试次数(3次)等
     private Site site = Site.me().setRetryTimes(3).setSleepTime(1000);
+    String prefix = "https://img.pixivic.com:23334/get/";
 
     /**
      * process是定制爬虫逻辑的核心接口，在这里编写抽取逻辑
@@ -26,7 +30,7 @@ public class PixivProcessor implements PageProcessor {
         page.putField("readme", page.getHtml().xpath("//div[@id='readme']/tidyText()"));
 
         // 部分三：从页面发现后续的url地址来抓取
-        page.addTargetRequests(page.getHtml().links().regex("(https://github\\.com/\\w+/\\w+)").all());
+//        page.addTargetRequests(page.getHtml().links().regex("(https://github\\.com/\\w+/\\w+)").all());
     }
 
     @Override
@@ -37,9 +41,12 @@ public class PixivProcessor implements PageProcessor {
     public static void main(String[] args) {
         Spider.create(new PixivProcessor())
                 //从"https://github.com/code4craft"开始抓
-                .addUrl("https://github.com/code4craft")
+                .addUrl("https://api.pixivic.com/ranks?page=0&date=2019-06-22&mode=day")
+                .addPipeline(new JsonFilePipeline("D://"))
+                .addPipeline(new FilePipeline("D://webmagic/"))
+                .addPipeline(new ConsolePipeline())
                 //开启5个线程抓取
-                .thread(5)
+//                .thread(5)
                 //启动爬虫
                 .run();
     }

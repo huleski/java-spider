@@ -21,7 +21,12 @@ public interface PictureMapper {
 
     /** 根据 ID 查询 */
     @Select("SELECT * FROM picture WHERE id=#{id}")
-    Picture select(int id);
+    Picture selectById(int id);
+
+
+    /** 根据 illust_id 查询 */
+    @Select("SELECT * FROM picture WHERE illust_id=#{illustId}")
+    Picture selectByIllustId(int illustId);
 
     /** 查询全部 */
     @Select("SELECT * FROM picture")

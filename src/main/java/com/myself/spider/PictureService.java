@@ -19,8 +19,8 @@ public class PictureService {
         return dao.insert(picture) > 0;
     }
 
-    public Picture select(int id) {
-        return dao.select(id);
+    public Picture selectById(int id) {
+        return dao.selectById(id);
     }
 
     public List<Picture> selectAll() {
