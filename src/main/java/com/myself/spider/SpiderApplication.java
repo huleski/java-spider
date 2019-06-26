@@ -20,9 +20,9 @@ import java.io.InputStream;
 public class SpiderApplication  implements CommandLineRunner {
 	private static final Logger logger = LoggerFactory.getLogger(SpiderApplication.class);
 
-	private final OkHttpClient client = new OkHttpClient();
-	private final Moshi moshi = new Moshi.Builder().build();
-	private final JsonAdapter<Picture> gistJsonAdapter = moshi.adapter(Picture.class);
+	private final static OkHttpClient client = new OkHttpClient();
+	private final static Moshi moshi = new Moshi.Builder().build();
+	private final static JsonAdapter<Result> resultAdapter = moshi.adapter(Result.class);
 
 	@Autowired
 	private PictureService pictureService;
@@ -31,46 +31,11 @@ public class SpiderApplication  implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		ConfigurableApplicationContext context = SpringApplication.run(SpiderApplication.class, args);
-
-		// GET请求异步方法
-		OkHttpClient client=new OkHttpClient();
-		Request request = new Request.Builder().url(url).build();
-		client.newCall(request).enqueue(new Callback() {
-			@Override
-			public void onFailure(Call call, IOException e) {
-				Request request1 = call.request();
-			}
-
-			@Override
-			public void onResponse(Call call, Response response) throws IOException {
-				try (ResponseBody responseBody = response.body()) {
-					if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-					System.out.println(responseBody.string());
-				}
-			}
-		});
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
-		// GET请求同步方法
-		OkHttpClient client=new OkHttpClient();
-		Request request = new Request.Builder().url(url) .build();
-		try (Response response = client.newCall(request).execute()) {
-			if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
-			Headers responseHeaders = response.headers();
-			for (int i = 0; i < responseHeaders.size(); i++) {
-				System.out.println(responseHeaders.name(i) + ": " + responseHeaders.value(i));
-			}
-
-			Picture picture = gistJsonAdapter.fromJson(response.body().source());
-
-			System.out.println(response.body().string());
-		}
-
-//		Response response= client.newCall(request).execute();
-//		String message=response.body().string();
+		synGetData();
 
 //		Picture picture = new Picture(6755775, 75268748, 1, "Neoartcore",
 //				"https://i.pximg.net/user-profile/img/2015/01/06/18/05/08/8812179_3f0edae6e9ee2e5248ce8c72c8c5e6ff_170.jpg",
@@ -80,13 +45,50 @@ public class SpiderApplication  implements CommandLineRunner {
 	}
 
 	/**
+	 * Get同步请求
+	 */
+	public void synGetData() throws Exception {
+		Request request = new Request.Builder().url(url) .build();
+		try (Response response = client.newCall(request).execute()) {
+			if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+			Headers responseHeaders = response.headers();
+			for (int i = 0; i < responseHeaders.size(); i++) {
+				System.out.println(responseHeaders.name(i) + ": " + responseHeaders.value(i));
+			}
+			Result result = resultAdapter.fromJson(response.body().source());
+			System.out.println(result);
+		}
+	}
+
+	/**
+	 * Get异步请求
+	 */
+	public void asynGetData(){
+		Request request = new Request.Builder().url(url).build();
+		client.newCall(request).enqueue(new Callback() {
+			@Override
+			public void onFailure(Call call, IOException e) {
+				logger.error("----------------------------请求失败------------------------");
+			}
+
+			@Override
+			public void onResponse(Call call, Response response) throws IOException {
+				try (ResponseBody responseBody = response.body()) {
+					if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+					Result result = resultAdapter.fromJson(responseBody.source());
+					System.out.println(responseBody.string());
+				}
+			}
+		});
+	};
+
+	/**
 	 * 文件下载
 	 */
 	public void download() {
 		String url = "http://www.0551fangchan.com/images/keupload/20120917171535_49309.jpg";
 		//构建request对象
 		Request request = new Request.Builder().url(url).build();
-		OkHttpClient client = new OkHttpClient();
 		client.newCall(request).enqueue(new Callback() {
 			@Override
 			public void onFailure(Call call, IOException e) {
