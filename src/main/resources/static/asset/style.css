@@ -13,7 +13,8 @@ body {
 }
 
 #waterfall {
-    width: 948px;
+    /* width: 948px; */
+    width: 80%;
     min-height: 200px;
     background-color: #fff;
     margin: 0 auto;
@@ -172,4 +173,19 @@ p {
 
 .choosed {
     border: 3px lime solid
+}
+
+#subButton {
+    display: block;
+    width: 150px;
+    margin: auto;
+    text-align: center;
+    padding: 8px 20px;
+    font-size: 22px;
+    font-weight: 300;
+    color: #fff;
+    line-height: 60px;
+    background: #5c9cd8;
+    border-radius: 4px;
+    cursor: pointer;
 }

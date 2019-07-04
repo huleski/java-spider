@@ -34,7 +34,8 @@ Lightbox.prototype.clickHandler = function (e) {
     e.preventDefault();
     this.galId = e.currentTarget.rel;
     this.current = 0;
-    if (e.currentTarget.meta_pages && e.currentTarget.meta_pages.length > 0) {
+    if(false){
+    // if (e.currentTarget.meta_pages && e.currentTarget.meta_pages.length > 0) {
         var imageflow = document.createElement('div');
         imageflow.classList.add('lightbox-imageflow');
         e.currentTarget.meta_pages.map(meta_page_item => {
