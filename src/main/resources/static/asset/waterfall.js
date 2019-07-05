@@ -3,6 +3,7 @@ var columnH = [],
     selectMode = 'day',
     flag = false, 
     date = "", 
+    baseUrl = "http://localhost:9000",
     url = 'https://api.pixivic.com/';
 
 function getDay(page, str) {
@@ -34,17 +35,38 @@ function getDay(page, str) {
     });
 
     $("#subButton").click(function(e){
+        let pics = [];
         $('.choosed').each(function(index, item){
             let elem = item.children[0];
-            console.log(item.children[0].author)
-            let title = elem.title;
-            let caption = elem.caption;
-            let tags = elem.tags;
-            let author = elem.author;
-            console.log('title' + ':' + title);
-            console.log('caption' + ':' + caption);
-            console.log('tags' + ':' + tags);
-            console.log('author' + ':' + author);
+            
+            let object = {};
+            object.title = elem.title;
+            object.illustId = elem.illustId;
+            object.caption = elem.caption;
+            object.sort = elem.sort;
+            object.user = elem.author.name;
+            object.userId = elem.author.id;
+            object.userAvator = elem.author.profile_image_urls.medium;
+            object.originalImg = item.originalImg;
+            object.laterImg = item.laterImg;
+            
+            let tagsArr = new Array();
+            elem.tags.forEach(function(item, index){
+                tagsArr.push(item.name);
+            });
+            object.tags = tagsArr.join(",");
+            pics.push(object);
+        });          
+
+        $.ajax({  
+            url : baseUrl + '/pic/add',
+            type : 'post',
+            dataType: 'json',
+            contentType: "application/json",
+            data : JSON.stringify(pics),//转为json格式
+            success : function(e) {
+                console.log(e)
+            }
         });
     });
 }());
@@ -70,6 +92,26 @@ function ajax(method, url, data, callback, flag) {
         xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         xhr.send(data);
     }
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+                callback(xhr.responseText);
+            }
+        }
+    }
+}
+
+function post(url, data, callback) {
+    var xhr = null;
+    if (window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest();
+    } else {
+        xhr = new ActiveXObject('Microsoft.XMLHttp');
+    }
+
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.send(data);
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4) {
             if (xhr.status == 200) {
@@ -135,7 +177,10 @@ function showlist(data) {
                 index ++;
     
                 Object.assign(oDiv.children[0], {
-                    meta_pages: item.meta_pages.map(e => e.image_urls.original),
+                    originalImg: e.largeUrl,
+                    laterImg: e.orginUrl,
+                    sort: tmpInd + 1,
+                    illustId: item.illust_id,
                     title: item.title,
                     caption: item.caption,
                     tags: item.tags,
