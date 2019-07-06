@@ -178,9 +178,7 @@ p {
 #subButton {
     display: block;
     width: 150px;
-    margin: auto;
     text-align: center;
-    padding: 8px 20px;
     font-size: 22px;
     font-weight: 300;
     color: #fff;
@@ -188,4 +186,7 @@ p {
     background: #5c9cd8;
     border-radius: 4px;
     cursor: pointer;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
 }

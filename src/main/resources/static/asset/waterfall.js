@@ -35,6 +35,10 @@ function getDay(page, str) {
     });
 
     $("#subButton").click(function(e){
+        if (!confirm("确定生成吗?")) {
+            return;
+        }
+
         let pics = [];
         $('.choosed').each(function(index, item){
             let elem = item.children[0];
@@ -47,8 +51,8 @@ function getDay(page, str) {
             object.user = elem.author.name;
             object.userId = elem.author.id;
             object.userAvator = elem.author.profile_image_urls.medium;
-            object.originalImg = item.originalImg;
-            object.laterImg = item.laterImg;
+            object.originalImg = elem.originalImg;
+            object.laterImg = elem.laterImg;
             
             let tagsArr = new Array();
             elem.tags.forEach(function(item, index){
@@ -145,10 +149,16 @@ function showlist(data) {
             imgH = Math.ceil(228 * item.height / item.width);
             if (item.meta_pages.length > 0) {
                 item.meta_pages.map(e => {
-                    arr.push({orginUrl:e.image_urls.original, largeUrl:e.image_urls.large});
+                    arr.push({
+                        orginUrl:e.image_urls.original, 
+                        largeUrl:e.image_urls.large
+                    });
                 });
             } else {
-                arr.push({orginUrl:item.meta_single_page.original_image_url, largeUrl:item.meta_single_page.large_image_url});
+                arr.push({
+                    orginUrl:item.meta_single_page.original_image_url, 
+                    largeUrl:item.meta_single_page.large_image_url
+                    });
             }
 
             arr.forEach(function(e, tmpInd){

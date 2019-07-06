@@ -4,6 +4,21 @@ spring:
     url: jdbc:sqlite:D://project/spider.db
     username: root
     password: 123456
+  freemarker:
+    # 禁用模板缓存
+    cache: false
+    # 编码格式
+    charset: UTF-8
+    # freemarker模板后缀 默认是 .ftl
+    suffix: .ftl
+    # 是否为此技术启用MVC视图分辨率。
+    enabled: true
+    # Content-Type值
+    contentType: text/html
+    # #模板加载路径 按需配置 ,默认路径是 classpath:/templates/
+    templateLoaderPath: classpath:/templates/
+    settings:
+      number_format: 0.##
 
 server:
   port: 9000
@@ -14,3 +29,14 @@ server:
     max-threads: 800
     # Tomcat启动初始化的线程数，默认值25
     min-spare-threads: 30
+
+logging:
+  level:
+    com.myself.spider: debug
+    org.springframework: WARN
+    org.spring.springboot.dao: debug
+
+path:
+  pic: E://Document/picture/wx/
+
+netmask: "https://img.pixivic.com:23334/get/"

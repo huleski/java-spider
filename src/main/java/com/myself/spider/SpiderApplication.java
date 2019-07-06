@@ -14,10 +14,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 @SpringBootApplication
 public class SpiderApplication  implements CommandLineRunner {
@@ -88,36 +85,8 @@ public class SpiderApplication  implements CommandLineRunner {
 		});
 	};
 
-	/**
-	 * 文件下载
-	 */
-	public void download() {
-		String url = "http://www.0551fangchan.com/images/keupload/20120917171535_49309.jpg";
-		//构建request对象
-		Request request = new Request.Builder().url(url).build();
-		client.newCall(request).enqueue(new Callback() {
-			@Override
-			public void onFailure(Call call, IOException e) {
-
-			}
-
-			@Override
-			public void onResponse(Call call, Response response) throws IOException {
-				InputStream inputStream = response.body().byteStream();
-				FileOutputStream fileOutputStream = new FileOutputStream(new File("/sdcard/logo.jpg"));
-				byte[] buffer = new byte[2048];
-				int len = 0;
-				while ((len = inputStream.read(buffer)) != -1) {
-					fileOutputStream.write(buffer, 0, len);
-				}
-				fileOutputStream.close();
-				logger.info("文件下载成功...");
-			}
-		});
-
 		// 设置超时
 //		client.newBuilder().connectTimeout(10, TimeUnit.SECONDS);
 //		client.newBuilder().readTimeout(10,TimeUnit.SECONDS);
 //		client.newBuilder().writeTimeout(10,TimeUnit.SECONDS);
-	}
 }
