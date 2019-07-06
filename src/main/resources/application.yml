@@ -4,3 +4,13 @@ spring:
     url: jdbc:sqlite:D://project/spider.db
     username: root
     password: 123456
+
+server:
+  port: 9000
+  servlet:
+    context-path: /
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 800
+    # Tomcat启动初始化的线程数，默认值25
+    min-spare-threads: 30

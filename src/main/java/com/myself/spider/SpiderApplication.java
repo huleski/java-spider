@@ -5,11 +5,14 @@ import com.squareup.moshi.Moshi;
 import okhttp3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,25 +26,28 @@ public class SpiderApplication  implements CommandLineRunner {
 	private final static OkHttpClient client = new OkHttpClient();
 	private final static Moshi moshi = new Moshi.Builder().build();
 	private final static JsonAdapter<Result> resultAdapter = moshi.adapter(Result.class);
-
-	@Autowired
-	private PictureService pictureService;
-
-	private static String url = "https://api.pixivic.com/ranks?page=0&date=2019-06-22&mode=day";
+	private static String url = "";
 
 	public static void main(String[] args) {
 		ConfigurableApplicationContext context = SpringApplication.run(SpiderApplication.class, args);
 	}
 
+	@Bean
+	public CorsFilter corsFilter() {
+		CorsConfiguration config = new CorsConfiguration();
+		config.addAllowedOrigin("*");
+		config.setAllowCredentials(true);
+		config.addAllowedMethod("*");
+		config.addAllowedHeader("*");
+
+		UrlBasedCorsConfigurationSource configSource = new UrlBasedCorsConfigurationSource();
+		configSource.registerCorsConfiguration("/**", config);
+		return new CorsFilter(configSource);
+	}
+
 	@Override
 	public void run(String... args) throws Exception {
-		synGetData();
-
-//		Picture picture = new Picture(6755775, 75268748, 1, "Neoartcore",
-//				"https://i.pximg.net/user-profile/img/2015/01/06/18/05/08/8812179_3f0edae6e9ee2e5248ce8c72c8c5e6ff_170.jpg",
-//				"Nessa", "https://upload.cc/i1/2019/06/20/ZlNW9b.jpg", "https://upload.cc/i1/2019/06/20/ZlNW9b.jpg",
-//				"2019-06-16");
-//		pictureService.insert(picture);
+//		synGetData();
 	}
 
 	/**
