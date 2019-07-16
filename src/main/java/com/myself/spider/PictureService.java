@@ -13,25 +13,26 @@ import java.util.List;
 @Service
 public class PictureService {
     @Autowired
-    private PictureMapper dao;
+    private PictureDao dao;
 
-    public boolean insert(Picture picture) {
-        return dao.insert(picture) > 0;
+    public void saveAndUpdate(Picture picture) {
+        dao.save(picture);
     }
 
     public Picture selectById(int id) {
-        return dao.selectById(id);
+        return dao.getOne(id);
     }
 
     public List<Picture> selectAll() {
-        return dao.selectAll();
+        return dao.findAll();
     }
 
-    public boolean updateValue(Picture picture) {
-        return dao.updateValue(picture) > 0;
+    public void delete(Integer id) {
+        dao.deleteById(id);
     }
 
-    public boolean delete(Integer id) {
-        return dao.delete(id) > 0;
+    public boolean saveAll(List<Picture> pics) {
+        List list = dao.saveAll(pics);
+        return list.size() > 0;
     }
 }

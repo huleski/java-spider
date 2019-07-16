@@ -2,7 +2,7 @@ var columnH = [],
     page = 0,
     selectMode = 'day',
     flag = false, 
-    date = "", 
+    date = "",
     baseUrl = "http://localhost:9000",
     url = 'https://api.pixivic.com/';
 
@@ -31,6 +31,7 @@ function getDay(page, str) {
     $("#waterfall").on("mousedown", ".box", function(e){
         if(e.which == 3) {  // 右键
             $(this).toggleClass("choosed");
+            $('#tip').html("已选" + $(".choosed").length + "张");
         }
     });
 
@@ -141,8 +142,7 @@ function showlist(data) {
         for(let i = 0; i < str.length; i ++){
             let item = str[i];
 
-            if (item.type == "manga") {
-                console.log(item.type);
+            if (item.type == "manga" || item.meta_pages.length > 10) {
                 continue;
             } 
             let arr = new Array();
@@ -294,7 +294,7 @@ function showdate() {
 function restart(date) {
     document.getElementById("waterfall").innerHTML = '';
     document.getElementById('loader').style.top = "0px";
-    document.title = `Pixiv ${date} ${selectMode}排行`;
+    document.title = `${date} ${selectMode}排行`;
     Lightbox.prototype.index = 0;
     columnH = [],
         page = 0,

@@ -5,7 +5,6 @@ import freemarker.template.Template;
 import okhttp3.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @Auther: Holeski
@@ -32,8 +32,9 @@ import java.util.concurrent.TimeUnit;
 @Controller
 public class PicController {
     private static final Logger logger = LoggerFactory.getLogger(PicController.class);
-    private final static OkHttpClient client = new OkHttpClient().newBuilder().readTimeout(30, TimeUnit.SECONDS).build();
+    private final static OkHttpClient client = new OkHttpClient().newBuilder().readTimeout(1, TimeUnit.MINUTES).build();
     private String date = DateFormatUtils.format(new Date(), "yyyy-MM-dd");
+//    private String date = "2019-07-08";
 
     @Autowired
     private PictureService pictureService;
@@ -52,9 +53,10 @@ public class PicController {
     public Object save(@RequestBody List<Picture> pics) throws Exception {
 //        pictureService.insert(picture);
         // 排序
-        Collections.sort(pics, (o1, o2) -> {
+        pics.stream().sorted((o1, o2) -> {
             return o1.getUserAvator().compareTo(o2.getUserAvator());
         });
+        pictureService.saveAll(pics);
         generateFile(pics);
         downloadPicture(pics);
         return "OK";
@@ -71,7 +73,7 @@ public class PicController {
         });
         Map map = new HashMap<>();
         map.put("pics", pics);
-        Template template = configuration.getTemplate("wx.ftl");
+        Template template = configuration.getTemplate("wx2.ftl");
         String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, map);
         File path = new File(filePath + date);
         if (!path.exists()) {
@@ -92,7 +94,9 @@ public class PicController {
      * 文件下载
      */
     public void downloadPicture(List<Picture> pics) {
+        AtomicInteger index = new AtomicInteger(1);
         pics.forEach(picture -> {
+            index.getAndIncrement();
             String url = picture.getOriginalImg();
             //构建request对象
             Request request = new Request.Builder().url(url).build();
@@ -115,7 +119,7 @@ public class PicController {
                         while ((len = inputStream.read(buffer)) != -1) {
                             fileOutputStream.write(buffer, 0, len);
                         }
-                        logger.info("文件下载成功...");
+                        logger.info("图片"  + index + "下载成功...");
                     } catch (Exception e) {
                         logger.error("file(" + url + ") download failed---------", e);
                     } finally {
@@ -130,10 +134,5 @@ public class PicController {
         });
     }
 
-    @Test
-    public void test(){
-        String substring = "asel.jpg".substring("asel.jpg".lastIndexOf("."));
-        System.out.println(substring);
-    }
 }
 

@@ -19,6 +19,9 @@ spring:
     templateLoaderPath: classpath:/templates/
     settings:
       number_format: 0.##
+  jpa:
+    database: mysql
+    show-sql: true
 
 server:
   port: 9000
