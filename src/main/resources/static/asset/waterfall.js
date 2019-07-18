@@ -53,17 +53,17 @@ function getDay(page, str) {
             object.userId = elem.author.id;
             object.userAvator = elem.author.profile_image_urls.medium;
             object.originalImg = elem.originalImg;
-            object.laterImg = elem.laterImg;
-            
+            object.fixedImg = elem.fixedImg;
+            object.rankDate = date;
             let tagsArr = new Array();
             elem.tags.forEach(function(item, index){
                 tagsArr.push(item.name);
             });
             object.tags = tagsArr.join(",");
             pics.push(object);
-        });          
+        });
 
-        $.ajax({  
+        $.ajax({
             url : baseUrl + '/pic/add',
             type : 'post',
             dataType: 'json',
@@ -187,8 +187,8 @@ function showlist(data) {
                 index ++;
     
                 Object.assign(oDiv.children[0], {
-                    originalImg: e.largeUrl,
-                    laterImg: e.orginUrl,
+                    originalImg: e.orginUrl,
+                    fixedImg: e.largeUrl,
                     sort: tmpInd + 1,
                     illustId: item.illust_id,
                     title: item.title,

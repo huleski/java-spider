@@ -20,9 +20,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @Auther: Holeski
@@ -34,7 +36,7 @@ public class PicController {
     private static final Logger logger = LoggerFactory.getLogger(PicController.class);
     private final static OkHttpClient client = new OkHttpClient().newBuilder().readTimeout(1, TimeUnit.MINUTES).build();
     private String date = DateFormatUtils.format(new Date(), "yyyy-MM-dd");
-//    private String date = "2019-07-08";
+    private volatile int count = 1;
 
     @Autowired
     private PictureService pictureService;
@@ -51,14 +53,16 @@ public class PicController {
     @RequestMapping(value = "/pic/add")
     @ResponseBody
     public Object save(@RequestBody List<Picture> pics) throws Exception {
-//        pictureService.insert(picture);
         // 排序
-        pics.stream().sorted((o1, o2) -> {
+        /*pics.stream().sorted((o1, o2) -> {
             return o1.getUserAvator().compareTo(o2.getUserAvator());
-        });
-        pictureService.saveAll(pics);
-        generateFile(pics);
-        downloadPicture(pics);
+        }).forEach(picture -> {
+            picture.setCreateDate(date);
+            picture.setRankDate(rankDate);
+        });*/
+//        pictureService.saveAll(pics);
+//        generateFile(pics);
+//        downloadPicture(pics);
         return "OK";
     }
 
@@ -94,16 +98,14 @@ public class PicController {
      * 文件下载
      */
     public void downloadPicture(List<Picture> pics) {
-        AtomicInteger index = new AtomicInteger(1);
         pics.forEach(picture -> {
-            index.getAndIncrement();
-            String url = picture.getOriginalImg();
+            String url = picture.getFixedImg();
             //构建request对象
             Request request = new Request.Builder().url(url).build();
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-
+                    logger.error("请求失败", e);
                 }
 
                 @Override
@@ -119,7 +121,8 @@ public class PicController {
                         while ((len = inputStream.read(buffer)) != -1) {
                             fileOutputStream.write(buffer, 0, len);
                         }
-                        logger.info("图片"  + index + "下载成功...");
+                        logger.info("图片【"  + count + "】下载成功...");
+                        count ++;
                     } catch (Exception e) {
                         logger.error("file(" + url + ") download failed---------", e);
                     } finally {

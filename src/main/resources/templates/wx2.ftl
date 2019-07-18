@@ -49,8 +49,10 @@
                     <section
                         style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;text-align: right;font-size: 24px;margin-right: 0%;margin-left: 0%;box-sizing: border-box;"
                         powered-by="xiumi.us">
-                        <section
-                            style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;display: inline-block;vertical-align: top;width: 3em;height: 3em;margin: auto;border-radius: 100%;border-width: 5px;border-style: solid;border-color: rgb(255, 255, 255);background-position: center center;background-repeat: no-repeat;background-size: cover;overflow: hidden;background-image: url(&quot;${pic.userAvator}&quot;);">
+                        <section style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;display: inline-block;vertical-align: top;width: 3em;height: 3em;margin: auto;border-radius: 100%;border-width: 5px;border-style: solid;border-color: rgb(255, 255, 255);background-position: center center;background-repeat: no-repeat;background-size: cover;overflow: hidden;background-image: url(&quot;${pic.userAvator}&quot;);">
+                            <section style="height: 100%;overflow: hidden;line-height: 0;vertical-align: middle;max-width: 100%;box-sizing: border-box;" class="">
+                                <img data-ratio="0.8705882" src="${pic.userAvator}" data-type="png" data-w="170" style="width: 100%;height: 100%;opacity: 0;box-sizing: border-box;"/>
+                            </section>
                         </section>
                     </section>
                 </section>
