@@ -54,15 +54,14 @@ public class PicController {
     @ResponseBody
     public Object save(@RequestBody List<Picture> pics) throws Exception {
         // 排序
-        /*pics.stream().sorted((o1, o2) -> {
+        pics.stream().sorted((o1, o2) -> {
             return o1.getUserAvator().compareTo(o2.getUserAvator());
         }).forEach(picture -> {
             picture.setCreateDate(date);
-            picture.setRankDate(rankDate);
-        });*/
-//        pictureService.saveAll(pics);
-//        generateFile(pics);
-//        downloadPicture(pics);
+        });
+        pictureService.saveAll(pics);
+        generateFile(pics);
+        downloadPicture(pics);
         return "OK";
     }
 
