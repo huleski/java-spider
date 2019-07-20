@@ -32,9 +32,9 @@
                                 <section
                                     style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;max-width: 100%;vertical-align: middle;display: inline-block;line-height: 0;border-width: 0px;border-radius: 4px;border-style: none;border-color: rgb(62, 62, 62);overflow: hidden;box-sizing: border-box;">
                                     <img class="raw-image" data-ratio="1.412963"
-                                        src="${pic.originalImg}" data-type="png" data-w="1080"
+                                        src="${pic.fixedImg}" data-type="png" data-w="1080"
                                         style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;vertical-align: middle;box-sizing: border-box;"
-                                        _src="${pic.originalImg}"></section>
+                                        _src="${pic.fixedImg}"></section>
                             </section>
                         </section>
                     </section>

@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Data
 public class Picture {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Integer id;
     private Integer userId;
     private Integer illustId;

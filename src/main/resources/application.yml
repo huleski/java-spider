@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: org.sqlite.JDBC
-    url: jdbc:sqlite:D://project/spider.db
+    url: jdbc:sqlite:C://Users/Holeski/OneDrive/附件/spider.db
     username: root
     password: 123456
   freemarker:
@@ -20,8 +20,10 @@ spring:
     settings:
       number_format: 0.##
   jpa:
-    database: mysql
+    database-platform: com.myself.spider.SQLiteDialect
     show-sql: true
+    generate-ddl: true
+    open-in-view: true
 
 server:
   port: 9000
@@ -40,6 +42,6 @@ logging:
     org.spring.springboot.dao: debug
 
 path:
-  pic: E://Document/picture/wx/
+  pic: E://pictures/acg/
 
 netmask: "https://img.pixivic.com:23334/get/"

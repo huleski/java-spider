@@ -35,7 +35,8 @@ import java.util.concurrent.TimeUnit;
 public class PicController {
     private static final Logger logger = LoggerFactory.getLogger(PicController.class);
     private final static OkHttpClient client = new OkHttpClient().newBuilder().readTimeout(1, TimeUnit.MINUTES).build();
-    private String date = DateFormatUtils.format(new Date(), "yyyy-MM-dd");
+        private String date = DateFormatUtils.format(new Date(), "yyyy-MM-dd");
+//    private String date = "2019-07-21";
     private volatile int count = 1;
 
     @Autowired
@@ -98,7 +99,7 @@ public class PicController {
      */
     public void downloadPicture(List<Picture> pics) {
         pics.forEach(picture -> {
-            String url = picture.getFixedImg();
+            String url = picture.getOriginalImg();
             //构建request对象
             Request request = new Request.Builder().url(url).build();
             client.newCall(request).enqueue(new Callback() {
