@@ -36,7 +36,7 @@ public class PicController {
     private static final Logger logger = LoggerFactory.getLogger(PicController.class);
     private final static OkHttpClient client = new OkHttpClient().newBuilder().readTimeout(1, TimeUnit.MINUTES).build();
         private String date = DateFormatUtils.format(new Date(), "yyyy-MM-dd");
-//    private String date = "2019-07-21";
+//    private String date = "2019-07-22";
     private volatile int count = 1;
 
     @Autowired
@@ -63,6 +63,7 @@ public class PicController {
         pictureService.saveAll(pics);
         generateFile(pics);
         downloadPicture(pics);
+        count = 1;
         return "OK";
     }
 

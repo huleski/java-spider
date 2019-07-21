@@ -61,7 +61,7 @@ public class DemoApplicationTests {
 
         Request request = new Request.Builder().post(formBody).url(url) .build();
         try (Response response = okHttpClient.newCall(request).execute()) {
-            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+            if (!response.isSuccessful()) throw new Exception("Unexpected code " + response);
             Headers responseHeaders = response.headers();
             for (int i = 0; i < responseHeaders.size(); i++) {
                 logger.info(responseHeaders.name(i) + ": " + responseHeaders.value(i));
@@ -70,6 +70,35 @@ public class DemoApplicationTests {
             logger.info(result);
         }
     }
+
+    public void saveArticle(String content) throws Exception {
+        String saveUrl = "http://bj.96weixin.com/indexajax/saveart";
+        FormBody formBody = new FormBody.Builder()
+                .add("cate_id", "0")
+                .add("id", "6092731")
+                .add("name", "【每日精选】2019-07-22 精选图集")
+                .add("summary", "精选图集")
+                .add("thumbnail", "http://bj96weixin-1252078571.file.myqcloud.com/ueditor/20190720/156363356110137683329197.jpg")
+                .add("author", "CryCat")
+                .add("artcover", "0")
+                .add("original", "true")
+                .add("content", content)
+                .build();
+
+        Request request = new Request.Builder().post(formBody).url(saveUrl) .build();
+        try (Response response = okHttpClient.newCall(request).execute()) {
+            if (!response.isSuccessful()) throw new Exception("Unexpected code " + response);
+            String result = response.body().string();
+            logger.info(result);
+        }
+    }
+
+
+
+
+
+
+
 
     /**
      * @param cookies cookie list
