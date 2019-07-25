@@ -49,7 +49,6 @@ public class DemoApplicationTests {
     @Test
     public void contextLoads() throws Exception {
         login(loginUrl);
-
     }
 
     public void login(String url) throws Exception {
