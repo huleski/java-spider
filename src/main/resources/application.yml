@@ -19,6 +19,8 @@ spring:
     templateLoaderPath: classpath:/templates/
     settings:
       number_format: 0.##
+    profiles:
+      active: key
   jpa:
     database-platform: com.myself.spider.SQLiteDialect
     show-sql: true
@@ -42,6 +44,4 @@ logging:
     org.spring.springboot.dao: debug
 
 path:
-  pic: E://pictures/acg/
-
-netmask: "https://img.pixivic.com:23334/get/"
+  pic: E://Document/picture/wx/
