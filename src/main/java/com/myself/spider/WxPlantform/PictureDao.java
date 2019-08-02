@@ -1,4 +1,4 @@
-package com.myself.spider;
+package com.myself.spider.WxPlantform;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

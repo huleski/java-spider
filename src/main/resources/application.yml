@@ -19,8 +19,8 @@ spring:
     templateLoaderPath: classpath:/templates/
     settings:
       number_format: 0.##
-    profiles:
-      active: key
+  profiles:
+    active: key
   jpa:
     database-platform: com.myself.spider.SQLiteDialect
     show-sql: true

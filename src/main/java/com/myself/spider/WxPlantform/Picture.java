@@ -1,4 +1,4 @@
-package com.myself.spider;
+package com.myself.spider.WxPlantform;
 
 import lombok.Data;
 
@@ -28,6 +28,11 @@ public class Picture {
     private String fixedImg;
     private String createDate;
     private String rankDate;
+
+    @Transient
+    private String uploadImg;
+    @Transient
+    private String uploadAvatar;
 
     public Picture() {
     }

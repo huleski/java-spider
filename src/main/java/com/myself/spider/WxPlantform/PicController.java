@@ -1,4 +1,4 @@
-package com.myself.spider;
+package com.myself.spider.WxPlantform;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -37,7 +37,6 @@ public class PicController {
     private final static OkHttpClient client = new OkHttpClient().newBuilder().readTimeout(1, TimeUnit.MINUTES).build();
         private String date = DateFormatUtils.format(new Date(), "yyyy-MM-dd");
 //    private String date = "2019-07-22";
-    private volatile int count = 1;
 
     @Autowired
     private PictureService pictureService;
@@ -53,17 +52,16 @@ public class PicController {
 
     @RequestMapping(value = "/pic/add")
     @ResponseBody
-    public Object save(@RequestBody List<Picture> pics) throws Exception {
+    public Object addPic(@RequestBody List<Picture> pics) throws Exception {
         // 排序
         pics.stream().sorted((o1, o2) -> {
             return o1.getUserAvator().compareTo(o2.getUserAvator());
         }).forEach(picture -> {
             picture.setCreateDate(date);
         });
-        pictureService.saveAll(pics);
+//        pictureService.saveAll(pics);
         generateFile(pics);
-        downloadPicture(pics);
-        count = 1;
+//        downloadPictureSyn(pics);
         return "OK";
     }
 
@@ -88,17 +86,56 @@ public class PicController {
         logger.info("生成文件成功");
     }
 
-    @RequestMapping("/test")
-    @ResponseBody
-    public String testFreemarker(ModelMap modelMap){
-        modelMap.addAttribute("name", "Hello dalaoyang , this is freemarker");
-        return "wx";
+    /**
+     * 文件同步下载
+     */
+    public void downloadPictureSyn(List<Picture> pics) {
+        for (int count = 0; count < pics.size(); count++) {
+            Picture picture = pics.get(count);
+            String url = picture.getOriginalImg();
+            //构建request对象
+            Request request = new Request.Builder().url(url).build();
+            try (Response response = client.newCall(request).execute()) {
+                if (!response.isSuccessful()){
+                    logger.error("file(" + url + ") request is not OK---------", response);
+                    return;
+                }
+
+                FileOutputStream fileOutputStream = null;
+                try {
+                    InputStream inputStream = response.body().byteStream();
+                    String pictureName = picture.getUser().replaceAll("[//\\\\:*?\"<>|]", "") +
+                            " •「" + picture.getIllustId() + "」" + url.substring(url.lastIndexOf("."));
+                    File parentPath = new File(filePath + date + File.separator + "originalImg");
+                    if (!parentPath.exists()) {
+                        parentPath.mkdirs();
+                    }
+                    fileOutputStream = new FileOutputStream(new File(parentPath, pictureName));
+                    byte[] buffer = new byte[2048];
+                    int len = 0;
+                    while ((len = inputStream.read(buffer)) != -1) {
+                        fileOutputStream.write(buffer, 0, len);
+                    }
+                    logger.info("图片【"  + (count + 1) + "】下载成功...");
+                } catch (Exception e) {
+                    logger.error("file(" + url + ") download failed---------", e);
+                } finally {
+                    try {
+                        fileOutputStream.close();
+                    } catch (IOException e) {
+                        logger.error("close stream failed", e);
+                    }
+                }
+            } catch (IOException e) {
+                logger.error("file(" + url + ") request failed---------", e);
+            }
+        };
     }
 
     /**
-     * 文件下载
+     * 文件异步下载
      */
-    public void downloadPicture(List<Picture> pics) {
+    public void downloadPictureAsyn(List<Picture> pics) {
         pics.forEach(picture -> {
             String url = picture.getOriginalImg();
             //构建request对象
@@ -116,14 +153,17 @@ public class PicController {
                         InputStream inputStream = response.body().byteStream();
                         String pictureName = picture.getUser().replaceAll("[//\\\\:*?\"<>|]", "") +
                                 " •「" + picture.getIllustId() + "」" + url.substring(url.lastIndexOf("."));
-                        fileOutputStream = new FileOutputStream(new File(filePath + date, pictureName));
+                        File parentPath = new File(filePath + date);
+                        if (!parentPath.exists()) {
+                            parentPath.mkdirs();
+                        }
+                        fileOutputStream = new FileOutputStream(new File(parentPath, pictureName));
                         byte[] buffer = new byte[2048];
                         int len = 0;
                         while ((len = inputStream.read(buffer)) != -1) {
                             fileOutputStream.write(buffer, 0, len);
                         }
-                        logger.info("图片【"  + count + "】下载成功...");
-                        count ++;
+                        logger.info("图片【】下载成功...");
                     } catch (Exception e) {
                         logger.error("file(" + url + ") download failed---------", e);
                     } finally {
@@ -138,5 +178,11 @@ public class PicController {
         });
     }
 
+    @RequestMapping("/test")
+    @ResponseBody
+    public String testFreemarker(ModelMap modelMap){
+        modelMap.addAttribute("name", "Hello dalaoyang , this is freemarker");
+        return "wx";
+    }
 }
 
