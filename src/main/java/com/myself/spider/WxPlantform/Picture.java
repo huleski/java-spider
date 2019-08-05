@@ -3,6 +3,7 @@ package com.myself.spider.WxPlantform;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.File;
 
 /**
  * @Auther: Holeski
@@ -30,9 +31,10 @@ public class Picture {
     private String rankDate;
 
     @Transient
-    private String uploadImg;
+    private File file;
+
     @Transient
-    private String uploadAvatar;
+    private String uploadImg;
 
     public Picture() {
     }
