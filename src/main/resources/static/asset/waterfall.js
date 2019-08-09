@@ -34,48 +34,48 @@ function getDay(page, str) {
             $('#tip').html("已选" + $(".choosed").length + "张");
         }
     });
-
-    $("#subButton").click(function(e){
-        if (!confirm("确定生成吗?")) {
-            return;
-        }
-
-        let pics = [];
-        $('.choosed').each(function(index, item){
-            let elem = item.children[0];
-            
-            let object = {};
-            object.title = elem.title;
-            object.illustId = elem.illustId;
-            object.caption = elem.caption;
-            object.sort = elem.sort;
-            object.user = elem.author.name;
-            object.userId = elem.author.id;
-            object.userAvator = elem.author.profile_image_urls.medium;
-            object.originalImg = elem.originalImg;
-            object.fixedImg = elem.fixedImg;
-            object.rankDate = date;
-            let tagsArr = new Array();
-            elem.tags.forEach(function(item, index){
-                tagsArr.push(item.name);
-            });
-            object.tags = tagsArr.join(",");
-            pics.push(object);
-        });
-
-        $.ajax({
-            url : baseUrl + '/pic/add',
-            type : 'post',
-            dataType: 'json',
-            contentType: "application/json",
-            data : JSON.stringify(pics),//转为json格式
-            success : function(e) {
-                console.log(e)
-            }
-        });
-    });
 }());
 init();
+
+function addPictures(url){
+    if (!confirm("确定执行吗?")) {
+        return;
+    }
+
+    let pics = [];
+    $('.choosed').each(function(index, item){
+        let elem = item.children[0];
+
+        let object = {};
+        object.title = elem.title;
+        object.illustId = elem.illustId;
+        object.caption = elem.caption;
+        object.sort = elem.sort;
+        object.user = elem.author.name;
+        object.userId = elem.author.id;
+        object.userAvator = elem.author.profile_image_urls.medium;
+        object.originalImg = elem.originalImg;
+        object.fixedImg = elem.fixedImg;
+        object.rankDate = date;
+        let tagsArr = new Array();
+        elem.tags.forEach(function(item, index){
+            tagsArr.push(item.name);
+        });
+        object.tags = tagsArr.join(",");
+        pics.push(object);
+    });
+
+    $.ajax({
+        url : baseUrl + url,
+        type : 'post',
+        dataType: 'json',
+        contentType: "application/json",
+        data : JSON.stringify(pics),//转为json格式
+        success : function(e) {
+            console.log(e)
+        }
+    });
+};
 
 function init() {
     ajax("get", url + 'ranks', `page=${page}&date=${date}&mode=${selectMode}`, showlist, true);

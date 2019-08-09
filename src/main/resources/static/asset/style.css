@@ -175,7 +175,7 @@ p {
     border: 3px lime solid
 }
 
-#subButton {
+.myButton {
     display: block;
     width: 150px;
     text-align: center;
@@ -187,7 +187,6 @@ p {
     border-radius: 4px;
     cursor: pointer;
     position: fixed;
-    top: 100px;
     right: 20px;
 }
 
