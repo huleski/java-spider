@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,7 +61,7 @@ public class PicController {
         pics.stream().sorted((o1, o2) -> {
             return o1.getUserAvator().compareTo(o2.getUserAvator());
         }).forEach(picture -> {
-            picture.setCreateDate(DateFormatUtils.format(new Date(), "yyyy-MM-dd"));
+            picture.setCreateDate(date);
         });
         pictureService.saveAll(pics);
         generateFile(pics);
@@ -72,15 +71,49 @@ public class PicController {
     @RequestMapping(value = "/synchronize")
     @ResponseBody
     public Object synchronizeArticle(@RequestBody List<Picture> pics) throws Exception {
-        webEditor.writeArticle(pics);
+        // 排序
+        pics.stream().sorted((o1, o2) -> {
+            return o1.getUserAvator().compareTo(o2.getUserAvator());
+        }).forEach(picture -> {
+            picture.setCreateDate(date);
+        });
+        pictureService.saveAll(pics);
+        PicVariable.pictures = pics;
+        webEditor.downloadOriginalImg(pics);
+        return "OK";
+    }
+
+    @RequestMapping("/save")
+    @ResponseBody
+    public String save(@RequestBody List<Picture> pics) throws Exception {
+        pics.stream().sorted((o1, o2) -> {
+            return o1.getUserAvator().compareTo(o2.getUserAvator());
+        }).forEach(picture -> {
+            picture.setCreateDate(date);
+        });
+        pictureService.saveAll(pics);
+        return "OK";
+    }
+
+    @RequestMapping("/today")
+    @ResponseBody
+    public String today() throws Exception {
+        List<Picture> pics = pictureService.selectToday(date);
+        pics.stream().sorted((o1, o2) -> {
+            return o1.getUserAvator().compareTo(o2.getUserAvator());
+        });
+        PicVariable.pictures = pics;
+        webEditor.downloadOriginalImg(pics);
         return "OK";
     }
 
     @RequestMapping("/test")
     @ResponseBody
-    public String testFreemarker(ModelMap modelMap){
-        modelMap.addAttribute("name", "Hello dalaoyang , this is freemarker");
-        return "wx";
+    public String test(@RequestBody List<Picture> pics) throws Exception {
+        PicVariable.pictures = pics;
+        webEditor.login();
+        webEditor.saveArticle();
+        return "OK";
     }
 
     /**
@@ -111,7 +144,6 @@ public class PicController {
                         }
 
                         File file = new File(parentPath, pictureName);
-                        picture.setFile(file);
                         fileOutputStream = new FileOutputStream(file);
                         byte[] buffer = new byte[2048];
                         int len = 0;
@@ -119,11 +151,6 @@ public class PicController {
                             fileOutputStream.write(buffer, 0, len);
                         }
                         logger.info("图片【" + ++PicVariable.original_count + "】下载成功...");
-
-                        if (PicVariable.original_count > PicVariable.pictures.size()) {
-                            // 下载完成
-//                            webEditor.nextStep();
-                        }
                     } catch (Exception e) {
                         logger.error("file(" + url + ") download failed---------", e);
                     } finally {

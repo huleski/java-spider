@@ -31,7 +31,7 @@ function getDay(page, str) {
     $("#waterfall").on("mousedown", ".box", function(e){
         if(e.which == 3) {  // 右键
             $(this).toggleClass("choosed");
-            $('#tip').html("已选" + $(".choosed").length + "张");
+            $('#tip').html($(".choosed").length + "张");
         }
     });
 }());

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @Auther: Holeski
@@ -12,6 +13,7 @@ import java.io.Serializable;
  * @Description:
  */
 @Component
-public interface PictureDao extends JpaRepository<Picture,Integer>, JpaSpecificationExecutor<Picture>, Serializable {
+public interface PictureRepository extends JpaRepository<Picture,Integer>, JpaSpecificationExecutor<Picture>, Serializable {
 
+    List<Picture> findAllByCreateDate(String createDate);
 }

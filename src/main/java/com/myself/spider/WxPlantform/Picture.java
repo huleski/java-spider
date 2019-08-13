@@ -2,8 +2,10 @@ package com.myself.spider.WxPlantform;
 
 import lombok.Data;
 
-import javax.persistence.*;
-import java.io.File;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * @Auther: Holeski
@@ -29,12 +31,6 @@ public class Picture {
     private String fixedImg;
     private String createDate;
     private String rankDate;
-
-    @Transient
-    private File file;
-
-    @Transient
-    private String uploadImg;
 
     public Picture() {
     }

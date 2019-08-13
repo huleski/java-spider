@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 public class PictureService {
     @Autowired
-    private PictureDao dao;
+    private PictureRepository dao;
 
     public void saveAndUpdate(Picture picture) {
         dao.save(picture);
@@ -34,5 +34,9 @@ public class PictureService {
     public boolean saveAll(List<Picture> pics) {
         List list = dao.saveAll(pics);
         return list.size() > 0;
+    }
+
+    public List<Picture> selectToday(String createDate) {
+        return dao.findAllByCreateDate(createDate);
     }
 }
