@@ -9,7 +9,6 @@ import java.util.List;
  * @Description:
  */
 public abstract class PicVariable {
-    public static int maxTry = 3;
     public volatile static int original_count = 0;
     public volatile static int fixed_count = 0;
     public volatile static List<Picture> pictures;

@@ -107,12 +107,15 @@ public class PicController {
         return "OK";
     }
 
-    @RequestMapping("/test")
+    @RequestMapping("/write")
     @ResponseBody
-    public String test(@RequestBody List<Picture> pics) throws Exception {
+    public String write(String dateStr) throws Exception {
+        List<Picture> pics = pictureService.selectToday(dateStr);
+        pics.stream().sorted((o1, o2) -> {
+            return o1.getUserAvator().compareTo(o2.getUserAvator());
+        });
         PicVariable.pictures = pics;
-        webEditor.login();
-        webEditor.saveArticle();
+        webEditor.downloadOriginalImg(pics);
         return "OK";
     }
 

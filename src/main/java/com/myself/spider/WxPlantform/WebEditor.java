@@ -6,6 +6,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import net.coobird.thumbnailator.Thumbnails;
 import okhttp3.*;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -80,53 +81,14 @@ public class WebEditor {
     @Value("${platform.transferUrl}")
     private String transferUrl;
 
+    @Value("${platform.imgPrefix}")
+    private String imgPrefix;
+
     @Autowired
     private Configuration configuration;
 
     @Autowired
     private PictureRepository pictureDao;
-
-    private void nextStep() throws Exception {
-        login();
-        uploadImage();
-        saveArticle();
-        transferArticle();
-    }
-
-    /**
-     * 同步
-     */
-    private void transferArticle() throws Exception {
-        for (int i = 0; i < 3; i++) {
-            String type;
-            if (i == 0) {
-                type = "thumbnail";
-            } else if (i == 1) {
-                type = "img";
-            } else {
-                type = "art";
-            }
-            HashMap params = new HashMap<>();
-            params.put("art_id", "6092731");
-            params.put("wechat_id", "179085");
-            params.put("type", type);
-
-            Request request = new Request.Builder()
-                    .addHeader("X-Requested-With", "XMLHttpRequest")
-                    .post(getRequestBody(params)).url(transferUrl).build();
-            try (Response response = okHttpClient.newCall(request).execute()) {
-                if (!response.isSuccessful()) {
-                    transferArticle();
-                }
-                String result = response.body().string();
-                JSONObject jsonObject = JSON.parseObject(result);
-                logger.info(jsonObject.toJSONString());
-                if (i == 2) {
-                    logger.info("文章同步完成------------------------------");
-                }
-            }
-        }
-    }
 
     /**
      * 文件异步下载
@@ -136,6 +98,20 @@ public class WebEditor {
         PicVariable.voList.clear();
         pics.forEach(picture -> {
             String url = picture.getOriginalImg();
+
+            File parentPath = new File(filePath + date);
+            if (!parentPath.exists()) {
+                parentPath.mkdirs();
+            }
+            String pictureName = picture.getUser().replaceAll("[//\\\\:*?\"<>|]", "") +
+                    " •「" + picture.getIllustId() + "」" + "." + getExtension(url);
+            File file = new File(parentPath, pictureName);
+            if (file.exists()) {
+                PicVariable.voList.add(new PictureVo(picture.getIllustId(), picture.getUser(), picture.getUserAvator(), file));
+                downloadSuccess();
+                return;
+            }
+
             //构建request对象
             Request request = new Request.Builder().url(url).build();
             okHttpClient.newCall(request).enqueue(new Callback() {
@@ -146,19 +122,9 @@ public class WebEditor {
 
                 @Override
                 public void onResponse(Call call, Response response) {
-                    ++PicVariable.original_count;
-
                     FileOutputStream fileOutputStream = null;
                     try {
                         InputStream inputStream = response.body().byteStream();
-                        String pictureName = picture.getUser().replaceAll("[//\\\\:*?\"<>|]", "") +
-                                " •「" + picture.getIllustId() + "」" + "." + getExtension(url);
-                        File parentPath = new File(filePath + date);
-                        if (!parentPath.exists()) {
-                            parentPath.mkdirs();
-                        }
-
-                        File file = new File(parentPath, pictureName);
                         fileOutputStream = new FileOutputStream(file);
                         byte[] buffer = new byte[2048];
                         int len = 0;
@@ -175,19 +141,24 @@ public class WebEditor {
                             logger.error("close stream failed", e);
                         }
                     }
-
-                    if (PicVariable.original_count >= PicVariable.pictures.size()) {
-                        // 下载完成
-                        try {
-                            nextStep();
-                        } catch (Exception e) {
-                            logger.error("操作失败", e);
-                        }
-                    }
+                    downloadSuccess();
                 }
-
             });
         });
+    }
+
+    private synchronized void downloadSuccess() {
+        if (++PicVariable.original_count >= PicVariable.pictures.size()) {
+            try {
+                logger.info("下载完成, Link Start!!!----------------------");
+                login();
+                uploadImage();
+                saveArticle();
+                transferArticle();
+            } catch (Exception e) {
+                logger.error("操作失败", e);
+            }
+        }
     }
 
     /**
@@ -212,6 +183,7 @@ public class WebEditor {
             }
             String result = response.body().string();
             JSONObject jsonObject = JSON.parseObject(result);
+            PicVariable.isLogin = true;
             logger.info("登录成功------------------------------");
         }
     }
@@ -244,15 +216,14 @@ public class WebEditor {
                     .build();
             try (Response response = okHttpClient.newCall(request).execute()) {
                 if (!response.isSuccessful()) {
-                    logger.error("图片上传失败", response);
                     logger.info("图片【" + file.getName() + "】上传异常");
                     throw new IOException("Unexpected code " + response);
                 }
                 JSONObject jsonObject = JSON.parseObject(response.body().string());
-                pictureVo.setUploadImg((String) jsonObject.get("url"));
-                logger.info("图片上传完成------------------------------");
+                pictureVo.setUploadImg(imgPrefix + jsonObject.get("url"));
             }
         }
+        logger.info("图片上传完成------------------------------");
     }
 
     /**
@@ -266,6 +237,12 @@ public class WebEditor {
         map.put("pics", PicVariable.voList);
         Template template = configuration.getTemplate("article.ftl");
         String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, map);
+
+        File path = new File(filePath + date);
+        if (!path.exists()) {
+            path.mkdirs();
+        }
+        FileUtils.writeStringToFile(new File(path, date + ".html"), content);
 
         HashMap params = new HashMap<>();
         params.put("cate_id", "0");
@@ -288,9 +265,41 @@ public class WebEditor {
             }
             String result = response.body().string();
             JSONObject jsonObject = JSON.parseObject(result);
-            logger.info(jsonObject.toJSONString());
             logger.info("文章保存完成------------------------------");
         }
+    }
+
+    /**
+     * 同步
+     */
+    private void transferArticle() throws Exception {
+        for (int i = 0; i < 3; i++) {
+            String type;
+            if (i == 0) {
+                type = "thumbnail";
+            } else if (i == 1) {
+                type = "img";
+            } else {
+                type = "art";
+            }
+            HashMap params = new HashMap<>();
+            params.put("art_id", "6092731");
+            params.put("wechat_id", "179085");
+            params.put("type", type);
+
+            Request request = new Request.Builder()
+                    .addHeader("X-Requested-With", "XMLHttpRequest")
+                    .post(getRequestBody(params)).url(transferUrl).build();
+            try (Response response = okHttpClient.newCall(request).execute()) {
+                if (!response.isSuccessful()) {
+                    transferArticle();
+                }
+                String result = response.body().string();
+                JSONObject jsonObject = JSON.parseObject(result);
+//                logger.info(jsonObject.toJSONString());
+            }
+        }
+        logger.info("文章同步完成------------------------------");
     }
 
     private static RequestBody getRequestBody(Map<String, String> params) {
@@ -351,15 +360,15 @@ public class WebEditor {
             }
 
             FileOutputStream fileOutputStream = null;
+            String pictureName = picture.getUser().replaceAll("[//\\\\:*?\"<>|]", "") +
+                    " •「" + picture.getIllustId() + "」" + "." + getExtension(url);
+            File parentPath = new File(filePath + date);
+            if (!parentPath.exists()) {
+                parentPath.mkdirs();
+            }
+            File file = new File(parentPath, pictureName);
             try {
                 InputStream inputStream = response.body().byteStream();
-                String pictureName = picture.getUser().replaceAll("[//\\\\:*?\"<>|]", "") +
-                        " •「" + picture.getIllustId() + "」" + "." + getExtension(url);
-                File parentPath = new File(filePath + date);
-                if (!parentPath.exists()) {
-                    parentPath.mkdirs();
-                }
-                File file = new File(parentPath, pictureName);
                 fileOutputStream = new FileOutputStream(file);
                 byte[] buffer = new byte[2048];
                 int len = 0;
