@@ -32,9 +32,9 @@
                                 <section
                                     style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;max-width: 100%;vertical-align: middle;display: inline-block;line-height: 0;border-width: 0px;border-radius: 4px;border-style: none;border-color: rgb(62, 62, 62);overflow: hidden;box-sizing: border-box;">
                                     <img class="raw-image" data-ratio="1.412963"
-                                        src="${pic.uploadImg}" data-type="png" data-w="1080"
+                                        src="${pic.fixedImg}" data-type="png" data-w="1080"
                                         style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;vertical-align: middle;box-sizing: border-box;"
-                                        _src="${pic.uploadImg}"></section>
+                                        _src="${pic.fixedImg}"></section>
                             </section>
                         </section>
                     </section>
@@ -49,7 +49,7 @@
                     <section
                         style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;text-align: right;font-size: 24px;margin-right: 0%;margin-left: 0%;box-sizing: border-box;"
                         >
-                        <section style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;display: inline-block;vertical-align: top;width: 3em;height: 3em;margin: auto;border-radius: 100%;border-width: 5px;border-style: solid;border-color: rgb(255, 255, 255);background-position: center center;background-repeat: no-repeat;background-size: cover;overflow: hidden;background-image: url(${pic.userAvatar});">
+                        <section style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;display: inline-block;vertical-align: top;width: 3em;height: 3em;margin: auto;border-radius: 100%;border-width: 5px;border-style: solid;border-color: rgb(255, 255, 255);background-position: center center;background-repeat: no-repeat;background-size: cover;overflow: hidden;background-image: url(&quot;${pic.userAvatar}&quot;);">
                         </section>
                     </section>
                 </section>
@@ -176,7 +176,7 @@
                         style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;transform: translate3d(20px, 0px, 0px);text-align: left;font-size: 11px;margin-top: -55px;margin-right: 0%;margin-left: 0%;box-sizing: border-box;"
                         >
                         <section
-                            style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;width: 7em;height: 7em;display: inline-block;vertical-align: bottom;border-radius: 100%;border-width: 0px;border-style: none;border-color: rgb(86, 99, 144);background-position: center center;background-repeat: no-repeat;background-size: cover;overflow: hidden;background-image: url(https://cover.ipaiban.com/1562998054143.jpeg);">
+                            style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;width: 7em;height: 7em;display: inline-block;vertical-align: bottom;border-radius: 100%;border-width: 0px;border-style: none;border-color: rgb(86, 99, 144);background-position: center center;background-repeat: no-repeat;background-size: cover;overflow: hidden;background-image: url(&quot;https://cover.ipaiban.com/1562998054143.jpeg&quot;);">
                             <section
                                 style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;height: 100%;overflow: hidden;line-height: 0;vertical-align: middle;max-width: 100%;box-sizing: border-box;">
                                 <img data-ratio="1" src="https://cover.ipaiban.com/1562998054143.jpeg" data-type="jpeg"

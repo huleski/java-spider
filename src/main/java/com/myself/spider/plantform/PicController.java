@@ -1,4 +1,4 @@
-package com.myself.spider.WxPlantform;
+package com.myself.spider.plantform;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -54,32 +54,32 @@ public class PicController {
     @Value("${path.pic}")
     private String filePath;
 
-    @RequestMapping(value = "/generate")
+    /*@RequestMapping(value = "/generate")
     @ResponseBody
     public Object generateArticle(@RequestBody List<Picture> pics) throws Exception {
         // 排序
         pics.stream().sorted((o1, o2) -> {
-            return o1.getUserAvator().compareTo(o2.getUserAvator());
+            return o1.getUserAvatar().compareTo(o2.getUserAvatar());
         }).forEach(picture -> {
             picture.setCreateDate(date);
         });
         pictureService.saveAll(pics);
         generateFile(pics);
         return "OK";
-    }
+    }*/
 
     @RequestMapping(value = "/synchronize")
     @ResponseBody
     public Object synchronizeArticle(@RequestBody List<Picture> pics) throws Exception {
         // 排序
         pics.stream().sorted((o1, o2) -> {
-            return o1.getUserAvator().compareTo(o2.getUserAvator());
+            return o1.getUserAvatar().compareTo(o2.getUserAvatar());
         }).forEach(picture -> {
             picture.setCreateDate(date);
         });
         pictureService.saveAll(pics);
         PicVariable.pictures = pics;
-        webEditor.downloadOriginalImg(pics);
+        webEditor.downloadOriginalImg();
         return "OK";
     }
 
@@ -87,7 +87,7 @@ public class PicController {
     @ResponseBody
     public String save(@RequestBody List<Picture> pics) throws Exception {
         pics.stream().sorted((o1, o2) -> {
-            return o1.getUserAvator().compareTo(o2.getUserAvator());
+            return o1.getUserAvatar().compareTo(o2.getUserAvatar());
         }).forEach(picture -> {
             picture.setCreateDate(date);
         });
@@ -99,11 +99,8 @@ public class PicController {
     @ResponseBody
     public String today() throws Exception {
         List<Picture> pics = pictureService.selectToday(date);
-        pics.stream().sorted((o1, o2) -> {
-            return o1.getUserAvator().compareTo(o2.getUserAvator());
-        });
         PicVariable.pictures = pics;
-        webEditor.downloadOriginalImg(pics);
+        webEditor.downloadOriginalImg();
         return "OK";
     }
 
@@ -112,10 +109,10 @@ public class PicController {
     public String write(String dateStr) throws Exception {
         List<Picture> pics = pictureService.selectToday(dateStr);
         pics.stream().sorted((o1, o2) -> {
-            return o1.getUserAvator().compareTo(o2.getUserAvator());
+            return o1.getUserAvatar().compareTo(o2.getUserAvatar());
         });
         PicVariable.pictures = pics;
-        webEditor.downloadOriginalImg(pics);
+        webEditor.downloadOriginalImg();
         return "OK";
     }
 
@@ -176,7 +173,7 @@ public class PicController {
      */
     private void generateFile(List<Picture> pics) throws Exception {
         pics.forEach(e-> {
-            e.setUserAvator(netMask + e.getUserAvator());
+            e.setUserAvatar(netMask + e.getUserAvatar());
         });
         Map map = new HashMap<>();
         map.put("pics", pics);

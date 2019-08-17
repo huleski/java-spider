@@ -1,4 +1,4 @@
-package com.myself.spider.WxPlantform;
+package com.myself.spider.plantform;
 
 import lombok.Data;
 
@@ -13,17 +13,17 @@ import java.io.File;
 public class PictureVo {
     private Integer illustId;
     private String user;
-    private String userAvator;
+    private String userAvatar;
     private File file;
     private String uploadImg;
 
     public PictureVo() {
     }
 
-    public PictureVo(Integer illustId, String user, String userAvator, File file) {
+    public PictureVo(Integer illustId, String user, String userAvatar, File file) {
         this.illustId = illustId;
         this.user = user;
-        this.userAvator = userAvator;
+        this.userAvatar = userAvatar;
         this.file = file;
     }
 }

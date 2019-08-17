@@ -1,4 +1,4 @@
-package com.myself.spider.WxPlantform;
+package com.myself.spider.plantform;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -25,7 +25,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @Auther: Holeski
+ * @Author: Holeski
  * @Date: 2019/8/1 09:34
  * @Description:
  */
@@ -39,7 +39,7 @@ public class WebEditor {
 
     static {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.readTimeout(1, TimeUnit.MINUTES);
+        builder.readTimeout(30, TimeUnit.SECONDS);
 //        builder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)));
         builder.cookieJar(new CookieJar() {
             @Override
@@ -93,12 +93,12 @@ public class WebEditor {
     /**
      * 文件异步下载
      */
-    public void downloadOriginalImg(List<Picture> pics) {
+    public void downloadOriginalImg() {
         PicVariable.original_count = 0;
         PicVariable.voList.clear();
-        pics.forEach(picture -> {
+        logger.info("开始下载图片.................................");
+        for (Picture picture : PicVariable.pictures) {
             String url = picture.getOriginalImg();
-
             File parentPath = new File(filePath + date);
             if (!parentPath.exists()) {
                 parentPath.mkdirs();
@@ -107,8 +107,63 @@ public class WebEditor {
                     " •「" + picture.getIllustId() + "」" + "." + getExtension(url);
             File file = new File(parentPath, pictureName);
             if (file.exists()) {
-                PicVariable.voList.add(new PictureVo(picture.getIllustId(), picture.getUser(), picture.getUserAvator(), file));
+                PicVariable.voList.add(new PictureVo(picture.getIllustId(), picture.getUser(), netMask + picture.getUserAvatar(), file));
                 downloadSuccess();
+                continue;
+            }
+
+            //构建request对象
+            Request request = new Request.Builder().url(url).build();
+            okHttpClient.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    downloadPictureSyn(picture);
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) {
+                    FileOutputStream fileOutputStream = null;
+                    try {
+                        InputStream inputStream = response.body().byteStream();
+                        fileOutputStream = new FileOutputStream(file);
+                        byte[] buffer = new byte[2048];
+                        int len = 0;
+                        while ((len = inputStream.read(buffer)) != -1) {
+                            fileOutputStream.write(buffer, 0, len);
+                        }
+                        PicVariable.voList.add(new PictureVo(picture.getIllustId(), picture.getUser(), netMask + picture.getUserAvatar(), file));
+                    } catch (Exception e) {
+                        downloadPictureSyn(picture);
+                    } finally {
+                        try {
+                            fileOutputStream.close();
+                        } catch (IOException e) {
+                            logger.error("close stream failed", e);
+                        }
+                    }
+                    downloadSuccess();
+                }
+            });
+        }
+    }
+
+    /**
+     * 头像下载
+     */
+    /*public void downloadImg() {
+        PicVariable.avatar_count = 0;
+        PicVariable.pictures.forEach(picture -> {
+            String url = netMask + picture.getUserAvatar();
+
+            File parentPath = new File(filePath + date + File.separator + "avatars");
+            if (!parentPath.exists()) {
+                parentPath.mkdirs();
+            }
+            String avatarName = picture.getUser().replaceAll("[//\\\\:*?\"<>|]", "") + "." + getExtension(url);
+            File file = new File(parentPath, avatarName);
+            if (file.exists()) {
+                picture.setAvatarFile(file);
+                downloadOriginalImg();
                 return;
             }
 
@@ -131,7 +186,7 @@ public class WebEditor {
                         while ((len = inputStream.read(buffer)) != -1) {
                             fileOutputStream.write(buffer, 0, len);
                         }
-                        PicVariable.voList.add(new PictureVo(picture.getIllustId(), picture.getUser(), picture.getUserAvator(), file));
+                        picture.setAvatarFile(file);
                     } catch (Exception e) {
                         downloadPictureSyn(picture);
                     } finally {
@@ -141,20 +196,20 @@ public class WebEditor {
                             logger.error("close stream failed", e);
                         }
                     }
-                    downloadSuccess();
+                    downloadOriginalImg();
                 }
             });
         });
-    }
-
+    }*/
     private synchronized void downloadSuccess() {
         if (++PicVariable.original_count >= PicVariable.pictures.size()) {
             try {
-                logger.info("下载完成, Link Start!!!----------------------");
+                logger.info("下载图片完成, Link Start!!!----------------------");
                 login();
                 uploadImage();
-                saveArticle();
-                transferArticle();
+                generateFile();
+//                saveArticle();
+//                transferArticle();
             } catch (Exception e) {
                 logger.error("操作失败", e);
             }
@@ -198,6 +253,7 @@ public class WebEditor {
         for (int i = 0; i < PicVariable.voList.size(); i++) {
             PictureVo pictureVo = PicVariable.voList.get(i);
             File file = pictureVo.getFile();
+            // 压缩图片
             generateThumbnail(file);
             RequestBody image = RequestBody.create(MediaType.parse("image/*"), file);
             RequestBody requestBody = new MultipartBody.Builder()
@@ -230,9 +286,6 @@ public class WebEditor {
      * 保存
      */
     public void saveArticle() throws Exception {
-        PicVariable.voList.forEach(pictureVo -> {
-            pictureVo.setUserAvator(netMask + pictureVo.getUserAvator());
-        });
         Map map = new HashMap<>();
         map.put("pics", PicVariable.voList);
         Template template = configuration.getTemplate("article.ftl");
@@ -249,7 +302,7 @@ public class WebEditor {
         params.put("id", "6092731");
         params.put("name", "【每日精选】" + getTomorrow() + " 精选图集");
         params.put("summary", "精选图集");
-        params.put("thumbnail", "http://bj96weixin-1252078571.file.myqcloud.com/ueditor/20190718/156341003510137683337349.jpg");
+        params.put("thumbnail", "http://img.96weixin.com/ueditor/20190815/156587409910137683325518.jpg");
         params.put("author", "CryCat");
         params.put("artcover", "0");
         params.put("original", "true");
@@ -330,22 +383,6 @@ public class WebEditor {
         return extension;
     }
 
-    private static void generateThumbnail(File file) {
-        while (file.length() > 2 * 1024 * 1024) {
-            try {
-                Thumbnails.of(file)
-                        // 图片缩放率，不能和size()一起使用
-                        .scale(0.8d)
-                        // 图片压缩质量
-                        .outputQuality(0.5d)
-                        // 缩略图保存目录,该目录需存在，否则报错
-                        .toFile(file);
-            } catch (Exception e) {
-                logger.error("图片【" + file.getName() + "】压缩失败", e);
-            }
-        }
-    }
-
     /**
      * 文件同步下载
      */
@@ -375,7 +412,7 @@ public class WebEditor {
                 while ((len = inputStream.read(buffer)) != -1) {
                     fileOutputStream.write(buffer, 0, len);
                 }
-                PicVariable.voList.add(new PictureVo(picture.getIllustId(), picture.getUser(), picture.getUserAvator(), file));
+                PicVariable.voList.add(new PictureVo(picture.getIllustId(), picture.getUser(), netMask + picture.getUserAvatar(), file));
             } catch (Exception e) {
                 logger.error("图片【" + url + "】download failed---------", e);
             } finally {
@@ -400,5 +437,39 @@ public class WebEditor {
         calendar.setTime(new Date());
         calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + 1);
         return DateFormatUtils.format(calendar.getTime(), "yyyy-MM-dd");
+    }
+
+    /**
+     * generate file
+     *
+     * @throws Exception
+     */
+    private void generateFile() throws Exception {
+        Map map = new HashMap<>();
+        map.put("pics", PicVariable.voList);
+        Template template = configuration.getTemplate("file.ftl");
+        String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, map);
+        File path = new File(filePath + date);
+        if (!path.exists()) {
+            path.mkdirs();
+        }
+        FileUtils.writeStringToFile(new File(path, date + ".html"), content);
+        logger.info("生成文件成功");
+    }
+
+    private static void generateThumbnail(File file) {
+        try {
+            while (file.length() > 2 * 1024 * 1024) {
+                Thumbnails.of(file)
+                        // 图片缩放率，不能和size()一起使用
+                        .scale(0.8d)
+                        // 图片压缩质量
+                        .outputQuality(0.5d)
+                        // 缩略图保存目录,该目录需存在，否则报错
+                        .toFile(file);
+            }
+        } catch (Exception e) {
+            logger.error("图片【" + file.getName() + "】压缩失败", e);
+        }
     }
 }

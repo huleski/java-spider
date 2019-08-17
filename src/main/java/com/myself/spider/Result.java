@@ -77,7 +77,7 @@ class User {
     int id;
     String name;
     String account;
-    Avator profile_image_urls;
+    Avatar profile_image_urls;
 
     @Override
     public String toString() {
@@ -90,12 +90,12 @@ class User {
     }
 }
 
-class Avator {
+class Avatar {
     String medium;
 
     @Override
     public String toString() {
-        return "Avator{" +
+        return "Avatar{" +
                 "medium='" + medium + '\'' +
                 '}';
     }

@@ -53,7 +53,7 @@ function addPictures(url){
         object.sort = elem.sort;
         object.user = elem.author.name;
         object.userId = elem.author.id;
-        object.userAvator = elem.author.profile_image_urls.medium;
+        object.userAvatar = elem.author.profile_image_urls.medium;
         object.originalImg = elem.originalImg;
         object.fixedImg = elem.fixedImg;
         object.rankDate = date;

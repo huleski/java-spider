@@ -71,9 +71,9 @@ Lightbox.prototype.clickHandler = function (e) {
     p.innerHTML = `Intro: ${e.currentTarget.caption}`;
     intro.appendChild(p);
     if (e.currentTarget.author.profile_image_urls.medium) {
-        var avator = document.createElement('img');
-         avator.src = `https://img.pixivic.com:23334/get/${e.currentTarget.author.profile_image_urls.medium}`;
-        intro.appendChild(avator)
+        var avatar = document.createElement('img');
+         avatar.src = `https://img.pixivic.com:23334/get/${e.currentTarget.author.profile_image_urls.medium}`;
+        intro.appendChild(avatar)
     }
     var p = document.createElement('p');
     p.innerText = `${e.currentTarget.author.name}`

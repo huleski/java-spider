@@ -1,11 +1,9 @@
-package com.myself.spider.WxPlantform;
+package com.myself.spider.plantform;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.File;
 
 /**
  * @Auther: Holeski
@@ -23,7 +21,7 @@ public class Picture {
     private Integer illustId;
     private Integer sort;
     private String user;
-    private String userAvator;
+    private String userAvatar;
     private String title;
     private String caption;
     private String tags;
@@ -33,27 +31,30 @@ public class Picture {
     private String createDate;
     private String rankDate;
 
+    @Transient
+    private File avatarFile;
+
     public Picture() {
     }
 
-    public Picture(Integer userId, Integer illustId, Integer sort, String user, String userAvator, String title, String originalImg, String fixedImg, String createDate) {
+    public Picture(Integer userId, Integer illustId, Integer sort, String user, String userAvatar, String title, String originalImg, String fixedImg, String createDate) {
         this.userId = userId;
         this.illustId = illustId;
         this.sort = sort;
         this.user = user;
-        this.userAvator = userAvator;
+        this.userAvatar = userAvatar;
         this.title = title;
         this.originalImg = originalImg;
         this.fixedImg = fixedImg;
         this.createDate = createDate;
     }
 
-    public Picture(Integer userId, Integer illustId, Integer sort, String user, String userAvator, String title, String caption, String tags, String originalImg, String fixedImg, String createDate) {
+    public Picture(Integer userId, Integer illustId, Integer sort, String user, String userAvatar, String title, String caption, String tags, String originalImg, String fixedImg, String createDate) {
         this.userId = userId;
         this.illustId = illustId;
         this.sort = sort;
         this.user = user;
-        this.userAvator = userAvator;
+        this.userAvatar = userAvatar;
         this.title = title;
         this.caption = caption;
         this.tags = tags;
