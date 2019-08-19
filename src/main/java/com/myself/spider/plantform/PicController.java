@@ -97,17 +97,11 @@ public class PicController {
 
     @RequestMapping("/today")
     @ResponseBody
-    public String today() throws Exception {
-        List<Picture> pics = pictureService.selectToday(date);
-        PicVariable.pictures = pics;
-        webEditor.downloadOriginalImg();
-        return "OK";
-    }
-
-    @RequestMapping("/write")
-    @ResponseBody
-    public String write(String dateStr) throws Exception {
-        List<Picture> pics = pictureService.selectToday(dateStr);
+    public String today(String dateStr) throws Exception {
+        if (StringUtils.isEmpty(dateStr)) {
+            dateStr = date;
+        }
+        List<Picture> pics = pictureService.findAllByCreateDate(dateStr);
         pics.stream().sorted((o1, o2) -> {
             return o1.getUserAvatar().compareTo(o2.getUserAvatar());
         });

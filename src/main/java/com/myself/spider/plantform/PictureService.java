@@ -36,7 +36,7 @@ public class PictureService {
         return list.size() > 0;
     }
 
-    public List<Picture> selectToday(String createDate) {
+    public List<Picture> findAllByCreateDate(String createDate) {
         return dao.findAllByCreateDate(createDate);
     }
 }

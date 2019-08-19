@@ -208,7 +208,7 @@ public class WebEditor {
                 login();
                 uploadImage();
                 generateFile();
-//                saveArticle();
+                saveArticle();
 //                transferArticle();
             } catch (Exception e) {
                 logger.error("操作失败", e);
