@@ -11,7 +11,7 @@ import java.io.File;
  */
 @Data
 public class PictureVo {
-    private Integer illustId;
+    private String illustId;
     private String user;
     private String userAvatar;
     private File file;
@@ -20,10 +20,17 @@ public class PictureVo {
     public PictureVo() {
     }
 
-    public PictureVo(Integer illustId, String user, String userAvatar, File file) {
+    public PictureVo(String illustId, String user, String userAvatar, File file) {
         this.illustId = illustId;
         this.user = user;
         this.userAvatar = userAvatar;
         this.file = file;
+    }
+
+    public PictureVo(String illustId, String user, String userAvatar, String uploadImg) {
+        this.illustId = illustId;
+        this.user = user;
+        this.userAvatar = userAvatar;
+        this.uploadImg = uploadImg;
     }
 }

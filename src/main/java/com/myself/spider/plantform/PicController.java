@@ -21,10 +21,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -77,8 +74,8 @@ public class PicController {
         }).forEach(picture -> {
             picture.setCreateDate(date);
         });
-        pictureService.saveAll(pics);
-        PicVariable.pictures = pics;
+        List<Picture> pictures = pictureService.saveAll(pics);
+        PicVariable.pictures = pictures;
         webEditor.downloadOriginalImg();
         return "OK";
     }
@@ -107,6 +104,20 @@ public class PicController {
         });
         PicVariable.pictures = pics;
         webEditor.downloadOriginalImg();
+        return "OK";
+    }
+
+    @RequestMapping("/test")
+    @ResponseBody
+    public String test() throws Exception {
+        List<PictureVo> pics = new ArrayList<>(2);
+        PictureVo p1 = new PictureVo("1", "holeski", "http://img.96weixin.com/ueditor/20190920/1568962918667079.jpg", "http://img.96weixin.com/ueditor/20190920/1568948364754606.jpg");
+        PictureVo p2 = new PictureVo("2", "holeski", "http://img.96weixin.com/ueditor/20190920/1568962918667079.jpg", "http://img.96weixin.com/ueditor/20190920/1568948365556753.jpg");
+        pics.add(p1);
+        pics.add(p2);
+        PicVariable.voList = pics;
+        webEditor.login();
+        webEditor.saveArticle();
         return "OK";
     }
 
@@ -155,7 +166,6 @@ public class PicController {
                         }
                     }
                 }
-
             });
         });
     }

@@ -104,7 +104,7 @@ public class WebEditor {
                 parentPath.mkdirs();
             }
             String pictureName = picture.getUser().replaceAll("[//\\\\:*?\"<>|]", "") +
-                    " •「" + picture.getIllustId() + "」" + "." + getExtension(url);
+                    " •「" + picture.getIllustId() + "(" + picture.getSort() + ")」" + "." + getExtension(url);
             File file = new File(parentPath, pictureName);
             if (file.exists()) {
                 PicVariable.voList.add(new PictureVo(picture.getIllustId(), picture.getUser(), netMask + picture.getUserAvatar(), file));
@@ -207,9 +207,8 @@ public class WebEditor {
                 logger.info("下载图片完成, Link Start!!!----------------------");
                 login();
                 uploadImage();
-                generateFile();
                 saveArticle();
-//                transferArticle();
+                transferArticle();
             } catch (Exception e) {
                 logger.error("操作失败", e);
             }
@@ -297,6 +296,8 @@ public class WebEditor {
         }
         FileUtils.writeStringToFile(new File(path, date + ".html"), content);
 
+        // 特殊字符转义
+        content = content.replaceAll("&", "%26");
         HashMap params = new HashMap<>();
         params.put("cate_id", "0");
         params.put("id", "6092731");
@@ -398,7 +399,7 @@ public class WebEditor {
 
             FileOutputStream fileOutputStream = null;
             String pictureName = picture.getUser().replaceAll("[//\\\\:*?\"<>|]", "") +
-                    " •「" + picture.getIllustId() + "」" + "." + getExtension(url);
+                    " •「" + picture.getIllustId() + "(" + picture.getSort() + ")」" + "." + getExtension(url);
             File parentPath = new File(filePath + date);
             if (!parentPath.exists()) {
                 parentPath.mkdirs();

@@ -18,7 +18,7 @@ public class Picture {
     @GeneratedValue
     private Integer id;
     private Integer userId;
-    private Integer illustId;
+    private String illustId;
     private Integer sort;
     private String user;
     private String userAvatar;
@@ -37,7 +37,14 @@ public class Picture {
     public Picture() {
     }
 
-    public Picture(Integer userId, Integer illustId, Integer sort, String user, String userAvatar, String title, String originalImg, String fixedImg, String createDate) {
+    public Picture(String illustId, String user, String userAvatar, String uploadImg) {
+        this.illustId = illustId;
+        this.user = user;
+        this.userAvatar = userAvatar;
+        this.uploadImg = uploadImg;
+    }
+
+    public Picture(Integer userId, String illustId, Integer sort, String user, String userAvatar, String title, String originalImg, String fixedImg, String createDate) {
         this.userId = userId;
         this.illustId = illustId;
         this.sort = sort;
@@ -49,7 +56,7 @@ public class Picture {
         this.createDate = createDate;
     }
 
-    public Picture(Integer userId, Integer illustId, Integer sort, String user, String userAvatar, String title, String caption, String tags, String originalImg, String fixedImg, String createDate) {
+    public Picture(Integer userId, String illustId, Integer sort, String user, String userAvatar, String title, String caption, String tags, String originalImg, String fixedImg, String createDate) {
         this.userId = userId;
         this.illustId = illustId;
         this.sort = sort;

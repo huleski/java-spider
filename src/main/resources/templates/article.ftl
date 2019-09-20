@@ -1,81 +1,45 @@
-<section
-    style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;background-color: rgb(228, 244, 249);box-sizing: border-box;font-size: 16px;">
-    <section
-        style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;margin-top: -1px;margin-right: 0%;margin-left: 0%;text-align: center;box-sizing: border-box;"
-        >
-        <section
-            style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;display: inline-block;width: 100%;vertical-align: top;background-color: rgb(227, 244, 249);box-shadow: rgb(0, 0, 0) 0px 0px 0px;border-width: 0px;box-sizing: border-box;">
-            <section
-                style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;text-align: justify;box-sizing: border-box;"
-                >
-                <p
-                    style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;white-space: normal;box-sizing: border-box;">
-                    <br
-                        style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;">
-                </p>
+<section style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;background-color: rgb(228, 244, 249);box-sizing: border-box;font-size: 16px;">
+    <section style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;margin-top: -1px;margin-right: 0%;margin-left: 0%;text-align: center;box-sizing: border-box;">
+        <section style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;display: inline-block;width: 100%;vertical-align: top;background-color: rgb(227, 244, 249);box-shadow: rgb(0, 0, 0) 0px 0px 0px;border-width: 0px;box-sizing: border-box;">
+            <section style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;text-align: justify;box-sizing: border-box;">
+                <p style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;white-space: normal;box-sizing: border-box;">
+                    <br style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;"></p>
             </section>
             <#list pics as pic>
             <!-- pic -->
-            <section
-                style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;margin: 10px 0%;box-sizing: border-box;"
-                >
-                <section
-                    style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;display: inline-block;width: 100%;vertical-align: top;box-shadow: rgb(0, 0, 0) 0px 0px 0px;background-color: rgba(237, 202, 202, 0);border-width: 0px;line-height: 1;box-sizing: border-box;">
-                    <section
-                        style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;margin-right: 0%;margin-left: 0%;box-sizing: border-box;"
-                        >
-                        <section
-                            style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;display: inline-block;width: 95%;vertical-align: top;border-style: solid;border-width: 1px;border-radius: 0px;border-color: rgb(65, 62, 62);padding: 10px;box-shadow: rgb(0, 0, 0) 0px 0px 0px;line-height: 1;background-color: rgb(255, 255, 255);box-sizing: border-box;">
-                            <section
-                                style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;margin-right: 0%;margin-bottom: 40px;margin-left: 0%;box-sizing: border-box;"
-                                >
-                                <section
-                                    style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;max-width: 100%;vertical-align: middle;display: inline-block;line-height: 0;border-width: 0px;border-radius: 4px;border-style: none;border-color: rgb(62, 62, 62);overflow: hidden;box-sizing: border-box;">
-                                    <img class="raw-image" data-ratio="1.412963"
-                                        src="${pic.uploadImg}" data-type="png" data-w="1080"
-                                        style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;vertical-align: middle;box-sizing: border-box;"
-                                        _src="${pic.uploadImg}"></section>
+            <section style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;margin: 10px 0%;box-sizing: border-box;">
+                <section style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;display: inline-block;width: 100%;vertical-align: top;box-shadow: rgb(0, 0, 0) 0px 0px 0px;background-color: rgba(237, 202, 202, 0);border-width: 0px;line-height: 1;box-sizing: border-box;">
+                    <section style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;margin-right: 0%;margin-left: 0%;box-sizing: border-box;">
+                        <section style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;display: inline-block;width: 95%;vertical-align: top;border-style: solid;border-width: 1px;border-radius: 0px;border-color: rgb(65, 62, 62);padding: 10px;box-shadow: rgb(0, 0, 0) 0px 0px 0px;line-height: 1;background-color: rgb(255, 255, 255);box-sizing: border-box;">
+                            <section style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;margin-right: 0%;margin-bottom: 40px;margin-left: 0%;box-sizing: border-box;">
+                                <section style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;max-width: 100%;vertical-align: middle;display: inline-block;line-height: 0;border-width: 0px;border-radius: 4px;border-style: none;border-color: rgb(62, 62, 62);overflow: hidden;box-sizing: border-box;">
+                                    <img class="raw-image" data-ratio="1.412963" src="${pic.uploadImg}" data-type="png" data-w="1080"
+                                         style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;vertical-align: middle;box-sizing: border-box;"
+                                         _src="${pic.uploadImg}"></section>
                             </section>
                         </section>
                     </section>
                 </section>
             </section>
             <!-- avatar -->
-            <section
-                style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;margin-top: -85px;margin-right: 0%;margin-left: 0%;box-sizing: border-box;"
-                >
-                <section
-                    style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;display: inline-block;vertical-align: top;width: 25%;box-sizing: border-box;">
-                    <section
-                        style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;text-align: right;font-size: 24px;margin-right: 0%;margin-left: 0%;box-sizing: border-box;"
-                        >
-                        <section style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;display: inline-block;vertical-align: top;width: 3em;height: 3em;margin: auto;border-radius: 100%;border-width: 5px;border-style: solid;border-color: rgb(255, 255, 255);background-position: center center;background-repeat: no-repeat;background-size: cover;overflow: hidden;background-image: url(${pic.userAvatar});">
-                        </section>
+            <section style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;margin-top: -85px;margin-right: 0%;margin-left: 0%;box-sizing: border-box;">
+                <section style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;display: inline-block;vertical-align: top;width: 25%;box-sizing: border-box;">
+                    <section style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;text-align: right;font-size: 24px;margin-right: 0%;margin-left: 0%;box-sizing: border-box;">
+                        <section style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;display: inline-block;vertical-align: top;width: 3em;height: 3em;margin: auto;border-radius: 100%;
+                                border-width: 5px;border-style: solid;border-color: rgb(255, 255, 255);background-position: center center;background-repeat: no-repeat;background-size: cover;overflow: hidden;background-image: url(${pic.userAvatar});"></section>
                     </section>
                 </section>
-                <section
-                    style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;display: inline-block;vertical-align: top;width: 75%;box-sizing: border-box;">
-                    <section
-                        style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;margin-top: 30px;margin-right: 0%;margin-left: 0%;box-sizing: border-box;"
-                        >
-                        <section
-                            style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;text-align: justify;font-size: 14px;box-sizing: border-box;">
-                            <p style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;white-space: normal;box-sizing: border-box;">
-                                ${pic.user} •「${pic.illustId}」
-                            </p>
+                <section style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;display: inline-block;vertical-align: top;width: 75%;box-sizing: border-box;">
+                    <section style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;margin-top: 30px;margin-right: 0%;margin-left: 0%;box-sizing: border-box;">
+                        <section style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;text-align: justify;font-size: 14px;box-sizing: border-box;">
+                            <p style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;white-space: normal;box-sizing: border-box;">${pic.user} •「${pic.illustId}」</p>
                         </section>
                     </section>
                 </section>
             </section>
             <!-- blank -->
-            <section
-                style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;text-align: justify;box-sizing: border-box;"
-                >
-                <p
-                    style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;white-space: normal;box-sizing: border-box;">
-                    <br
-                        style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;">
-                </p>
+            <section style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;text-align: justify;box-sizing: border-box;">
+                <p style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;white-space: normal;box-sizing: border-box;"> <br style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;"></p>
             </section>
             </#list>
 
@@ -144,9 +108,9 @@
                             data-miniprogram-path="pages/index/index?id=22640" data-miniprogram-nickname="推文留言" href=""
                             data-miniprogram-type="image" data-miniprogram-servicetype=""><img class="rich_pages"
                                 data-ratio="0.25825571549534293" data-s="300,640"
-                                src="https://cover.ipaiban.com/1562998054078.png" data-type="png" data-w="2362"
+                                src="http://img.96weixin.com/ueditor/20190920/1568962918786493.png" data-type="png" data-w="2362"
                                 style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;"
-                                _src="https://cover.ipaiban.com/1562998054078.png"></a></p>
+                                _src="http://img.96weixin.com/ueditor/20190920/1568962918786493.png"></a></p>
                 </section>
                 <section
                     style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;height: 16px;box-sizing: border-box;">
@@ -163,9 +127,7 @@
                 >
                 <p
                     style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;white-space: normal;box-sizing: border-box;">
-                    <br
-                        style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;">
-                </p>
+                    <br style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;"></p>
             </section>
             <section
                 style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;margin-top: 40px;margin-right: 0%;margin-left: 0%;box-sizing: border-box;"
@@ -176,13 +138,13 @@
                         style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;transform: translate3d(20px, 0px, 0px);text-align: left;font-size: 11px;margin-top: -55px;margin-right: 0%;margin-left: 0%;box-sizing: border-box;"
                         >
                         <section
-                            style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;width: 7em;height: 7em;display: inline-block;vertical-align: bottom;border-radius: 100%;border-width: 0px;border-style: none;border-color: rgb(86, 99, 144);background-position: center center;background-repeat: no-repeat;background-size: cover;overflow: hidden;background-image: url(https://cover.ipaiban.com/1562998054143.jpeg);">
+                            style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;width: 7em;height: 7em;display: inline-block;vertical-align: bottom;border-radius: 100%;border-width: 0px;border-style: none;border-color: rgb(86, 99, 144);background-position: center center;background-repeat: no-repeat;background-size: cover;overflow: hidden;background-image: url(http://img.96weixin.com/ueditor/20190920/1568962918667079.jpg);">
                             <section
                                 style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;height: 100%;overflow: hidden;line-height: 0;vertical-align: middle;max-width: 100%;box-sizing: border-box;">
-                                <img data-ratio="1" src="https://cover.ipaiban.com/1562998054143.jpeg" data-type="jpeg"
+                                <img data-ratio="1" src="http://img.96weixin.com/ueditor/20190920/1568962918667079.jpg" data-type="jpeg"
                                     data-w="512"
                                     style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;width: 100%;height: 100%;opacity: 0;box-sizing: border-box;"
-                                    _src="https://cover.ipaiban.com/1562998054143.jpeg"></section>
+                                    _src="http://img.96weixin.com/ueditor/20190920/1568962918667079.jpg"></section>
                         </section>
                     </section>
                     <section
@@ -196,30 +158,25 @@
                                 <p
                                     style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;">
                                     <span
-                                        style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;font-family: Optima-Regular, PingFangTC-light;box-sizing: border-box;">如有侵权，联系删除</span>
-                                </p>
+                                        style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;font-family: Optima-Regular, PingFangTC-light;box-sizing: border-box;">如有侵权，联系删除</span></p>
                                 <p style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;">
                                     <span
-                                        style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;font-family: Optima-Regular, PingFangTC-light;box-sizing: border-box;">欢迎关注原画师（づ￣3￣）づ╭❤～</span>
-                                </p>
+                                        style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;font-family: Optima-Regular, PingFangTC-light;box-sizing: border-box;">欢迎关注原画师（づ￣3￣）づ╭❤～</span></p>
                                 <p
                                     style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;">
                                     <strong
                                         style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;"><span
-                                            style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;font-family: Optima-Regular, PingFangTC-light;box-sizing: border-box;">请留下你指尖的温度</span></strong>
-                                </p>
+                                            style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;font-family: Optima-Regular, PingFangTC-light;box-sizing: border-box;">请留下你指尖的温度</span></strong></p>
                                 <p
                                     style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;">
                                     <strong
                                         style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;"><span
-                                            style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;font-family: Optima-Regular, PingFangTC-light;box-sizing: border-box;">让太阳拥抱你</span></strong>
-                                </p>
+                                            style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;font-family: Optima-Regular, PingFangTC-light;box-sizing: border-box;">让太阳拥抱你</span></strong></p>
                                 <p
                                     style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;">
                                     <span
                                         style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;font-family: Optima-Regular, PingFangTC-light;box-sizing: border-box;"><strong
-                                            style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;">这是一个有温度的公众号</strong></span>
-                                </p>
+                                            style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;">这是一个有温度的公众号</strong></span></p>
                             </section>
                         </section>
                         <section
@@ -230,10 +187,10 @@
                                 <section
                                     style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;max-width: 100%;vertical-align: middle;display: inline-block;line-height: 0;width: 72%;box-shadow: rgba(22, 61, 101, 0.62) 0px 0px 6px;box-sizing: border-box;">
                                     <img class="raw-image" data-ratio="1"
-                                        src="https://cover.ipaiban.com/1562998054199.jpeg" data-type="jpeg"
+                                        src="http://img.96weixin.com/ueditor/20190920/1568962918160017.jpg" data-type="jpeg"
                                         data-w="1080"
                                         style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;vertical-align: middle;width: 100%;box-sizing: border-box;"
-                                        _src="https://cover.ipaiban.com/1562998054199.jpeg"></section>
+                                        _src="http://img.96weixin.com/ueditor/20190920/1568962918160017.jpg"></section>
                             </section>
                         </section>
                     </section>
@@ -243,16 +200,12 @@
                 style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;text-align: justify;box-sizing: border-box;">
                 <p
                     style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;white-space: normal;box-sizing: border-box;">
-                    <br
-                        style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;">
-                </p>
+                    <br style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;"></p>
             </section>
         </section>
     </section>
     <section style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;">
         <p style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;white-space: normal;box-sizing: border-box;">
-            <br
-                style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;">
-        </p>
+            <br style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;box-sizing: border-box;"></p>
     </section>
 </section>

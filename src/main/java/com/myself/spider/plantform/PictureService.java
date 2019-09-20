@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Auther: Holeski
@@ -31,9 +32,15 @@ public class PictureService {
         dao.deleteById(id);
     }
 
-    public boolean saveAll(List<Picture> pics) {
-        List list = dao.saveAll(pics);
-        return list.size() > 0;
+    public List<Picture> saveAll(List<Picture> pics) {
+        pics.forEach(picture -> {
+        });
+        List<Picture> collect = pics.stream().filter(picture -> {
+            List<Picture> results = dao.findAllByIllustIdAndSort(picture.getIllustId(), picture.getSort());
+            return results == null || results.size() < 1;
+        }).collect(Collectors.toList());
+        List list = dao.saveAll(collect);
+        return collect;
     }
 
     public List<Picture> findAllByCreateDate(String createDate) {

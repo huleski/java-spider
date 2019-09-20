@@ -5,7 +5,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.platform.commons.util.StringUtils;
 import org.slf4j.Logger;
@@ -27,7 +26,7 @@ public class DemoApplicationTests {
     private static String loginUrl = "http://bj.96weixin.com/login/phone";
     private static String cookieStr = null;
 
-    @Before
+//    @Before
     public void initClient() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)));
