@@ -2,25 +2,17 @@ package com.myself.spider.plantform;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import freemarker.template.Configuration;
 import freemarker.template.Template;
-import net.coobird.thumbnailator.Thumbnails;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+import org.springframework.util.FileCopyUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -30,12 +22,11 @@ import java.util.concurrent.TimeUnit;
  * @Description:
  */
 @Component
-public class WebEditor {
-    private final static Logger logger = LoggerFactory.getLogger(WebEditor.class);
+@Slf4j
+public class OKHttpEditor extends Editor {
     private static OkHttpClient okHttpClient = null;
     public static final MediaType FORM_CONTENT_TYPE = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");
     private static final Set<Cookie> cookieRepo = new HashSet<>();
-    private String date = DateFormatUtils.format(new Date(), "yyyy-MM-dd");
 
     static {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -57,46 +48,19 @@ public class WebEditor {
         okHttpClient = builder.build();
     }
 
-    @Value("${path.pic}")
-    private String filePath;
 
-    @Value("${netmask}")
-    private String netMask;
-
-    @Value("${platform.phone}")
-    private String phone;
-
-    @Value("${platform.password}")
-    private String password;
-
-    @Value("${platform.loginUrl}")
-    private String loginUrl;
-
-    @Value("${platform.uploadUrl}")
-    private String uploadUrl;
-
-    @Value("${platform.saveUrl}")
-    private String saveUrl;
-
-    @Value("${platform.transferUrl}")
-    private String transferUrl;
-
-    @Value("${platform.imgPrefix}")
-    private String imgPrefix;
-
-    @Autowired
-    private Configuration configuration;
 
     @Autowired
     private PictureRepository pictureDao;
 
     /**
-     * 文件异步下载
+     * 图片异步下载
      */
+    @Override
     public void downloadOriginalImg() {
         PicVariable.original_count = 0;
         PicVariable.voList.clear();
-        logger.info("开始下载图片.................................");
+        log.info("开始下载图片.................................");
         for (Picture picture : PicVariable.pictures) {
             String url = picture.getOriginalImg();
             File parentPath = new File(filePath + date);
@@ -122,24 +86,12 @@ public class WebEditor {
 
                 @Override
                 public void onResponse(Call call, Response response) {
-                    FileOutputStream fileOutputStream = null;
+
                     try {
-                        InputStream inputStream = response.body().byteStream();
-                        fileOutputStream = new FileOutputStream(file);
-                        byte[] buffer = new byte[2048];
-                        int len = 0;
-                        while ((len = inputStream.read(buffer)) != -1) {
-                            fileOutputStream.write(buffer, 0, len);
-                        }
+                        FileCopyUtils.copy(response.body().bytes(), file);
                         PicVariable.voList.add(new PictureVo(picture.getIllustId(), picture.getUser(), netMask + picture.getUserAvatar(), file));
                     } catch (Exception e) {
                         downloadPictureSyn(picture);
-                    } finally {
-                        try {
-                            fileOutputStream.close();
-                        } catch (IOException e) {
-                            logger.error("close stream failed", e);
-                        }
                     }
                     downloadSuccess();
                 }
@@ -147,70 +99,18 @@ public class WebEditor {
         }
     }
 
-    /**
-     * 头像下载
-     */
-    /*public void downloadImg() {
-        PicVariable.avatar_count = 0;
-        PicVariable.pictures.forEach(picture -> {
-            String url = netMask + picture.getUserAvatar();
-
-            File parentPath = new File(filePath + date + File.separator + "avatars");
-            if (!parentPath.exists()) {
-                parentPath.mkdirs();
-            }
-            String avatarName = picture.getUser().replaceAll("[//\\\\:*?\"<>|]", "") + "." + getExtension(url);
-            File file = new File(parentPath, avatarName);
-            if (file.exists()) {
-                picture.setAvatarFile(file);
-                downloadOriginalImg();
-                return;
-            }
-
-            //构建request对象
-            Request request = new Request.Builder().url(url).build();
-            okHttpClient.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    logger.error("请求失败", e);
-                }
-
-                @Override
-                public void onResponse(Call call, Response response) {
-                    FileOutputStream fileOutputStream = null;
-                    try {
-                        InputStream inputStream = response.body().byteStream();
-                        fileOutputStream = new FileOutputStream(file);
-                        byte[] buffer = new byte[2048];
-                        int len = 0;
-                        while ((len = inputStream.read(buffer)) != -1) {
-                            fileOutputStream.write(buffer, 0, len);
-                        }
-                        picture.setAvatarFile(file);
-                    } catch (Exception e) {
-                        downloadPictureSyn(picture);
-                    } finally {
-                        try {
-                            fileOutputStream.close();
-                        } catch (IOException e) {
-                            logger.error("close stream failed", e);
-                        }
-                    }
-                    downloadOriginalImg();
-                }
-            });
-        });
-    }*/
-    private synchronized void downloadSuccess() {
+    @Override
+    public synchronized void downloadSuccess() {
         if (++PicVariable.original_count >= PicVariable.pictures.size()) {
             try {
-                logger.info("下载图片完成, Link Start!!!----------------------");
+                log.info("下载图片完成, Link Start!!!----------------------");
                 login();
                 uploadImage();
+                generateFile();
                 saveArticle();
                 transferArticle();
             } catch (Exception e) {
-                logger.error("操作失败", e);
+                log.error("操作失败", e);
             }
         }
     }
@@ -218,6 +118,7 @@ public class WebEditor {
     /**
      * 登录
      */
+    @Override
     public void login() throws Exception {
         if (PicVariable.isLogin) {
             return;
@@ -232,13 +133,13 @@ public class WebEditor {
                 .post(getRequestBody(params)).url(loginUrl).build();
         try (Response response = okHttpClient.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                logger.error("登录失败", response);
+                log.error("登录失败", response);
                 throw new IOException("Unexpected code " + response);
             }
             String result = response.body().string();
             JSONObject jsonObject = JSON.parseObject(result);
             PicVariable.isLogin = true;
-            logger.info("登录成功------------------------------");
+            log.info("登录成功------------------------------");
         }
     }
 
@@ -248,12 +149,13 @@ public class WebEditor {
      * @return 新图片的路径
      * @throws Exception
      */
+    @Override
     public void uploadImage() throws Exception {
         for (int i = 0; i < PicVariable.voList.size(); i++) {
             PictureVo pictureVo = PicVariable.voList.get(i);
             File file = pictureVo.getFile();
             // 压缩图片
-            generateThumbnail(file);
+            thumbnailImage(file);
             RequestBody image = RequestBody.create(MediaType.parse("image/*"), file);
             RequestBody requestBody = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
@@ -271,62 +173,59 @@ public class WebEditor {
                     .build();
             try (Response response = okHttpClient.newCall(request).execute()) {
                 if (!response.isSuccessful()) {
-                    logger.info("图片【" + file.getName() + "】上传异常");
+                    log.info("图片【" + file.getName() + "】上传异常");
                     throw new IOException("Unexpected code " + response);
                 }
                 JSONObject jsonObject = JSON.parseObject(response.body().string());
                 pictureVo.setUploadImg(imgPrefix + jsonObject.get("url"));
             }
         }
-        logger.info("图片上传完成------------------------------");
+        log.info("图片上传完成------------------------------");
     }
 
     /**
      * 保存
      */
+    @Override
     public void saveArticle() throws Exception {
         Map map = new HashMap<>();
         map.put("pics", PicVariable.voList);
         Template template = configuration.getTemplate("article.ftl");
         String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, map);
 
-        File path = new File(filePath + date);
-        if (!path.exists()) {
-            path.mkdirs();
-        }
-        FileUtils.writeStringToFile(new File(path, date + ".html"), content);
-
-        // 特殊字符转义
-        content = content.replaceAll("&", "%26");
-        HashMap params = new HashMap<>();
-        params.put("cate_id", "0");
-        params.put("id", "6092731");
-        params.put("name", "【每日精选】" + getTomorrow() + " 精选图集");
-        params.put("summary", "精选图集");
-        params.put("thumbnail", "http://img.96weixin.com/ueditor/20190815/156587409910137683325518.jpg");
-        params.put("author", "CryCat");
-        params.put("artcover", "0");
-        params.put("original", "true");
-        params.put("content", content);
+        // 表单提交
+        RequestBody formBody = new FormBody.Builder()
+                .add("cate_id", "0")
+                .add("id", "6092731")
+                .add("name", "【每日精选】" + getTomorrow() + " 精选图集")
+                .add("summary", "精选图集")
+                .add("thumbnail", "http://img.96weixin.com/ueditor/20190815/156587409910137683325518.jpg")
+                .add("author", "CryCat")
+                .add("artcover", "0")
+                .add("original", "true")
+                .add("content", content)
+                .build();
 
         Request request = new Request.Builder()
                 .addHeader("X-Requested-With", "XMLHttpRequest")
-                .post(getRequestBody(params)).url(saveUrl).build();
+//                .post(getRequestBody(params)).url(saveUrl).build();
+                .post(formBody).url(saveUrl).build();
         try (Response response = okHttpClient.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                logger.error("文章保存失败", response);
+                log.error("文章保存失败", response);
                 throw new IOException("Unexpected code " + response);
             }
             String result = response.body().string();
             JSONObject jsonObject = JSON.parseObject(result);
-            logger.info("文章保存完成------------------------------");
+            log.info("文章保存完成------------------------------");
         }
     }
 
     /**
      * 同步
      */
-    private void transferArticle() throws Exception {
+    @Override
+    public void transferArticle() throws Exception {
         for (int i = 0; i < 3; i++) {
             String type;
             if (i == 0) {
@@ -348,12 +247,9 @@ public class WebEditor {
                 if (!response.isSuccessful()) {
                     transferArticle();
                 }
-                String result = response.body().string();
-                JSONObject jsonObject = JSON.parseObject(result);
-//                logger.info(jsonObject.toJSONString());
             }
         }
-        logger.info("文章同步完成------------------------------");
+        log.info("文章同步完成------------------------------");
     }
 
     private static RequestBody getRequestBody(Map<String, String> params) {
@@ -371,29 +267,16 @@ public class WebEditor {
     }
 
     /**
-     * 获取文件名的后缀
-     *
-     * @param url 文件url
-     * @return 后缀名
-     */
-    public static final String getExtension(String url) {
-        String extension = FilenameUtils.getExtension(url);
-        if (StringUtils.isEmpty(extension)) {
-            extension = "jpg";
-        }
-        return extension;
-    }
-
-    /**
      * 文件同步下载
      */
+    @Override
     public void downloadPictureSyn(Picture picture) {
         String url = picture.getFixedImg();
         //构建request对象
         Request request = new Request.Builder().url(url).build();
         try (Response response = okHttpClient.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                logger.error("file(" + url + ") request is not OK---------", response);
+                log.error("file(" + url + ") request is not OK---------", response);
                 return;
             }
 
@@ -406,71 +289,22 @@ public class WebEditor {
             }
             File file = new File(parentPath, pictureName);
             try {
-                InputStream inputStream = response.body().byteStream();
-                fileOutputStream = new FileOutputStream(file);
-                byte[] buffer = new byte[2048];
-                int len = 0;
-                while ((len = inputStream.read(buffer)) != -1) {
-                    fileOutputStream.write(buffer, 0, len);
-                }
+                FileCopyUtils.copy(response.body().bytes(), file);
                 PicVariable.voList.add(new PictureVo(picture.getIllustId(), picture.getUser(), netMask + picture.getUserAvatar(), file));
             } catch (Exception e) {
-                logger.error("图片【" + url + "】download failed---------", e);
+                log.error("图片【" + url + "】download failed---------", e);
             } finally {
                 try {
                     fileOutputStream.close();
                 } catch (IOException e) {
-                    logger.error("close stream failed", e);
+                    log.error("close stream failed", e);
                 }
             }
         } catch (IOException e) {
-            logger.error("file(" + url + ") request failed---------", e);
+            log.error("file(" + url + ") request failed---------", e);
         }
     }
 
-    /**
-     * 返回明天日期
-     *
-     * @return
-     */
-    public String getTomorrow() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + 1);
-        return DateFormatUtils.format(calendar.getTime(), "yyyy-MM-dd");
-    }
 
-    /**
-     * generate file
-     *
-     * @throws Exception
-     */
-    private void generateFile() throws Exception {
-        Map map = new HashMap<>();
-        map.put("pics", PicVariable.voList);
-        Template template = configuration.getTemplate("file.ftl");
-        String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, map);
-        File path = new File(filePath + date);
-        if (!path.exists()) {
-            path.mkdirs();
-        }
-        FileUtils.writeStringToFile(new File(path, date + ".html"), content);
-        logger.info("生成文件成功");
-    }
 
-    private static void generateThumbnail(File file) {
-        try {
-            while (file.length() > 2 * 1024 * 1024) {
-                Thumbnails.of(file)
-                        // 图片缩放率，不能和size()一起使用
-                        .scale(0.8d)
-                        // 图片压缩质量
-                        .outputQuality(0.5d)
-                        // 缩略图保存目录,该目录需存在，否则报错
-                        .toFile(file);
-            }
-        } catch (Exception e) {
-            logger.error("图片【" + file.getName() + "】压缩失败", e);
-        }
-    }
 }

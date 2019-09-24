@@ -22,7 +22,7 @@ spring:
   profiles:
     active: key
   jpa:
-    database-platform: com.myself.spider.SQLiteDialect
+    database-platform: com.myself.spider.plantform.SQLiteDialect
     show-sql: true
     generate-ddl: true
     open-in-view: true

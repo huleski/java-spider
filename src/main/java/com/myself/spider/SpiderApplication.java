@@ -1,5 +1,6 @@
 package com.myself.spider;
 
+import com.myself.spider.webmagic.Result;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import okhttp3.*;

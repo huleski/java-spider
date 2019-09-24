@@ -43,7 +43,7 @@ public class PicController {
     private PictureService pictureService;
 
     @Autowired
-    private WebEditor webEditor;
+    private OKHttpEditor OKHttpEditor;
 
     @Autowired
     private Configuration configuration;
@@ -76,7 +76,7 @@ public class PicController {
         });
         List<Picture> pictures = pictureService.saveAll(pics);
         PicVariable.pictures = pictures;
-        webEditor.downloadOriginalImg();
+        OKHttpEditor.downloadOriginalImg();
         return "OK";
     }
 
@@ -103,7 +103,7 @@ public class PicController {
             return o1.getUserAvatar().compareTo(o2.getUserAvatar());
         });
         PicVariable.pictures = pics;
-        webEditor.downloadOriginalImg();
+        OKHttpEditor.downloadOriginalImg();
         return "OK";
     }
 
@@ -116,8 +116,8 @@ public class PicController {
         pics.add(p1);
         pics.add(p2);
         PicVariable.voList = pics;
-        webEditor.login();
-        webEditor.saveArticle();
+        OKHttpEditor.login();
+        OKHttpEditor.saveArticle();
         return "OK";
     }
 
