@@ -1,4 +1,3 @@
-
 var columnH = [],
     page = 0,
     selectMode = 'day',
@@ -54,10 +53,9 @@ function addPictures(url){
         object.sort = elem.sort;
         object.user = elem.author.name;
         object.userId = elem.author.id;
-        object.userAvatar = elem.author.avatar;
+        object.userAvatar = elem.author.profile_image_urls.medium;
         object.originalImg = elem.originalImg;
         object.fixedImg = elem.fixedImg;
-        object.pixImg = elem.pixImg;
         object.rankDate = date;
         let tagsArr = new Array();
         elem.tags.forEach(function(item, index){
@@ -132,30 +130,36 @@ function post(url, data, callback) {
  * 修改过后的方法
  * @param {*} data 
  */
-function showlist(result) {
-    var dataArr = JSON.parse(result).data.data,
+function showlist(data) {
+    var str = JSON.parse(data).data.illustrations,
         elem = '',
         imgH = 0,
         content = document.getElementById("waterfall"),
         minIndex;
     var url;
-    if (dataArr.length > 0) {
+    if (str.length > 0) {
         let index = 0;
-        for(let i = 0; i < dataArr.length; i ++){
-            let item = dataArr[i];
+        for(let i = 0; i < str.length; i ++){
+            let item = str[i];
 
-            if (item.type == "manga" || item.imageUrls.length > 10) {
+            if (item.type == "manga" || item.meta_pages.length > 10) {
                 continue;
             } 
             let arr = new Array();
             imgH = Math.ceil(228 * item.height / item.width);
-            item.imageUrls.map(e => {
-                arr.push({
-                    orginUrl:e.original,
-                    largeUrl:e.large,
-                    mediumUrl:e.medium
+            if (item.meta_pages.length > 0) {
+                item.meta_pages.map(e => {
+                    arr.push({
+                        orginUrl:e.image_urls.original, 
+                        largeUrl:e.image_urls.large
+                    });
                 });
-            });
+            } else {
+                arr.push({
+                    orginUrl:item.meta_single_page.original_image_url, 
+                    largeUrl:item.meta_single_page.large_image_url
+                    });
+            }
 
             arr.forEach(function(e, tmpInd){
                 var oDiv = document.createElement("div");
@@ -185,13 +189,12 @@ function showlist(result) {
                 Object.assign(oDiv.children[0], {
                     originalImg: e.orginUrl,
                     fixedImg: e.largeUrl,
-                    pixImg: e.mediumUrl,
                     sort: tmpInd + 1,
-                    illustId: item.id,
+                    illustId: item.illust_id,
                     title: item.title,
                     caption: item.caption,
                     tags: item.tags,
-                    author: item.artistPreView,
+                    author: item.user,
                 });
             });
         }
