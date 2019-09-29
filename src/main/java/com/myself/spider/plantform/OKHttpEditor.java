@@ -11,7 +11,6 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.util.FileCopyUtils;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -208,7 +207,6 @@ public class OKHttpEditor extends Editor {
 
         Request request = new Request.Builder()
                 .addHeader("X-Requested-With", "XMLHttpRequest")
-//                .post(getRequestBody(params)).url(saveUrl).build();
                 .post(formBody).url(saveUrl).build();
         try (Response response = okHttpClient.newCall(request).execute()) {
             if (!response.isSuccessful()) {
@@ -280,7 +278,6 @@ public class OKHttpEditor extends Editor {
                 return;
             }
 
-            FileOutputStream fileOutputStream = null;
             String pictureName = picture.getUser().replaceAll("[//\\\\:*?\"<>|]", "") +
                     " •「" + picture.getIllustId() + "(" + picture.getSort() + ")」" + "." + getExtension(url);
             File parentPath = new File(filePath + date);
@@ -293,12 +290,6 @@ public class OKHttpEditor extends Editor {
                 PicVariable.voList.add(new PictureVo(picture.getIllustId(), picture.getUser(), netMask + picture.getUserAvatar(), file));
             } catch (Exception e) {
                 log.error("图片【" + url + "】download failed---------", e);
-            } finally {
-                try {
-                    fileOutputStream.close();
-                } catch (IOException e) {
-                    log.error("close stream failed", e);
-                }
             }
         } catch (IOException e) {
             log.error("file(" + url + ") request failed---------", e);

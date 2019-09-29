@@ -34,11 +34,11 @@ Lightbox.prototype.clickHandler = function (e) {
     e.preventDefault();
     this.galId = e.currentTarget.rel;
     this.current = 0;
-    if (e.currentTarget.meta_pages && e.currentTarget.meta_pages.length > 0) {
+    if (e.currentTarget.imageUrls && e.currentTarget.imageUrls.length > 0) {
         var imageflow = document.createElement('div');
         imageflow.classList.add('lightbox-imageflow');
-        e.currentTarget.meta_pages.map(meta_page_item => {
-            var img = this.setupImage(meta_page_item, e.currentTarget.rel);
+        e.currentTarget.imageUrls.map(item => {
+            var img = this.setupImage(item, e.currentTarget.rel);
             imageflow.appendChild(img);
         })
         this.container.appendChild(imageflow);
@@ -70,9 +70,9 @@ Lightbox.prototype.clickHandler = function (e) {
     p.classList.add('intro');
     p.innerHTML = `Intro: ${e.currentTarget.caption}`;
     intro.appendChild(p);
-    if (e.currentTarget.author.profile_image_urls.medium) {
+    if (e.currentTarget.author.avatar) {
         var avatar = document.createElement('img');
-         avatar.src = `https://img.pixivic.com:23334/get/${e.currentTarget.author.profile_image_urls.medium}`;
+         avatar.src = `https://img.pixivic.com:23334/get/${e.currentTarget.author.avatar}`;
         intro.appendChild(avatar)
     }
     var p = document.createElement('p');

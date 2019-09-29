@@ -1,6 +1,7 @@
+'use strict';
 
 var columnH = [],
-    page = 0,
+    page = 1,
     selectMode = 'day',
     flag = false, 
     date = "",
@@ -36,7 +37,7 @@ function getDay(page, str) {
         }
     });
 }());
-init();
+// init();
 
 function addPictures(url){
     if (!confirm("确定执行吗?")) {
@@ -277,7 +278,7 @@ function originalShowlist(data) {
 
 function showdate() {
     var Mtop = getScroll();
-    pageH = parseInt(columnH[minH(columnH)]),
+    let pageH = parseInt(columnH[minH(columnH)]),
         MaxH = document.documentElement.clientHeight || document.body.clientHeight;
     if (pageH <= MaxH + Mtop.y) {
         if (!flag) {
@@ -294,7 +295,7 @@ function restart(date) {
     document.title = `${date} ${selectMode}排行`;
     Lightbox.prototype.index = 0;
     columnH = [],
-        page = 0,
+        page = 1,
         flag = false;
     console.log(changeDateBySelect(0, date));
     ajax("get", url + 'ranks', `page=${page}&date=${date}&mode=${selectMode}`, showlist, true);
