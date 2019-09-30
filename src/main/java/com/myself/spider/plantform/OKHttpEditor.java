@@ -135,8 +135,6 @@ public class OKHttpEditor extends Editor {
                 log.error("登录失败", response);
                 throw new IOException("Unexpected code " + response);
             }
-            String result = response.body().string();
-            JSONObject jsonObject = JSON.parseObject(result);
             PicVariable.isLogin = true;
             log.info("登录成功------------------------------");
         }

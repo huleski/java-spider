@@ -43,27 +43,13 @@ public class PicController {
     private PictureService pictureService;
 
     @Autowired
-    private OKHttpEditor OKHttpEditor;
+    private Editor editor;
 
     @Autowired
     private Configuration configuration;
 
     @Value("${path.pic}")
     private String filePath;
-
-    /*@RequestMapping(value = "/generate")
-    @ResponseBody
-    public Object generateArticle(@RequestBody List<Picture> pics) throws Exception {
-        // 排序
-        pics.stream().sorted((o1, o2) -> {
-            return o1.getUserAvatar().compareTo(o2.getUserAvatar());
-        }).forEach(picture -> {
-            picture.setCreateDate(date);
-        });
-        pictureService.saveAll(pics);
-        generateFile(pics);
-        return "OK";
-    }*/
 
     @RequestMapping(value = "/synchronize")
     @ResponseBody
@@ -76,7 +62,7 @@ public class PicController {
         });
         List<Picture> pictures = pictureService.saveAll(pics);
         PicVariable.pictures = pictures;
-        OKHttpEditor.downloadOriginalImg();
+        editor.downloadOriginalImg();
         return "OK";
     }
 
@@ -103,7 +89,7 @@ public class PicController {
             return o1.getUserAvatar().compareTo(o2.getUserAvatar());
         });
         PicVariable.pictures = pics;
-        OKHttpEditor.downloadOriginalImg();
+        editor.downloadOriginalImg();
         return "OK";
     }
 
@@ -116,8 +102,8 @@ public class PicController {
         pics.add(p1);
         pics.add(p2);
         PicVariable.voList = pics;
-        OKHttpEditor.login();
-        OKHttpEditor.saveArticle();
+        editor.login();
+        editor.saveArticle();
         return "OK";
     }
 
