@@ -27,11 +27,12 @@ public class Picture {
     private String tags;
     private String originalImg;
     private String fixedImg;
-    private String uploadImg;
     private String pixImg;
     private String createDate;
     private String rankDate;
 
+    @Transient
+    private String uploadImg;
     @Transient
     private File avatarFile;
 

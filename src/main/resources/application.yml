@@ -43,5 +43,3 @@ logging:
     org.springframework: WARN
     org.spring.springboot.dao: debug
 
-path:
-  pic: E://Document/picture/wx/
