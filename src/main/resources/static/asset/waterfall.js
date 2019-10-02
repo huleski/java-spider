@@ -40,10 +40,6 @@ function getDay(page, str) {
 // init();
 
 function addPictures(url){
-    if (!confirm("确定执行吗?")) {
-        return;
-    }
-
     let pics = [];
     $('.choosed').each(function(index, item){
         let elem = item.children[0];

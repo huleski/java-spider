@@ -1,5 +1,6 @@
 package com.myself.spider;
 
+import com.alibaba.fastjson.JSONObject;
 import okhttp3.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -47,6 +48,9 @@ public class DemoApplicationTests {
 
     @Test
     public void contextLoads() throws Exception {
+        String s = "{\"state\":\"SUCCESS\",\"url\":\"ueditor\\/20191002\\/1570027934534759.png\",\"title\":\"1570027934534759.png\",\"original\":\"\\u30ea\\u30f3\\u2606\\u30e6\\u30a6\\uff201\\u65e5\\u76ee \\u897f\\u308c44b \\u2022\\u300c76838033(1)\\u300d.png\",\"type\":\".png\",\"size\":650149,\"errorCode\":\"\"}";
+        JSONObject jsonObject = JSONObject.parseObject(s);
+        System.out.println(jsonObject);
     }
 
     public void login(String url) throws Exception {

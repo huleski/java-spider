@@ -25,11 +25,11 @@ import java.util.Map;
 @Slf4j
 public abstract class Editor {
 
-    @Value("${path.pic}")
+    @Value("${pic.path}")
     String filePath;
 
-    @Value("${netmask}")
-    String netMask;
+    @Value("${pic.mask}")
+    String mask;
 
     @Value("${platform.phone}")
     String phone;
@@ -69,7 +69,20 @@ public abstract class Editor {
 
     public abstract void downloadPictureSyn(Picture picture);
 
-    public abstract void downloadSuccess();
+    public synchronized void downloadSuccess() {
+        if (++PicVariable.original_count >= PicVariable.pictures.size()) {
+            try {
+                log.info("下载图片完成, Link Start!!!----------------------");
+                login();
+                uploadImage();
+                generateFile();
+                saveArticle();
+                transferArticle();
+            } catch (Exception e) {
+                log.error("操作失败", e);
+            }
+        }
+    }
 
     /**
      * 获取文件名的后缀

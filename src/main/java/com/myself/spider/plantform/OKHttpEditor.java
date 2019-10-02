@@ -5,8 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import freemarker.template.Template;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.util.FileCopyUtils;
 
@@ -20,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  * @Date: 2019/8/1 09:34
  * @Description:
  */
-@Component
+//@Component
 @Slf4j
 public class OKHttpEditor extends Editor {
     private static OkHttpClient okHttpClient = null;
@@ -47,11 +45,6 @@ public class OKHttpEditor extends Editor {
         okHttpClient = builder.build();
     }
 
-
-
-    @Autowired
-    private PictureRepository pictureDao;
-
     /**
      * 图片异步下载
      */
@@ -70,7 +63,7 @@ public class OKHttpEditor extends Editor {
                     " •「" + picture.getIllustId() + "(" + picture.getSort() + ")」" + "." + getExtension(url);
             File file = new File(parentPath, pictureName);
             if (file.exists()) {
-                PicVariable.voList.add(new PictureVo(picture.getIllustId(), picture.getUser(), netMask + picture.getUserAvatar(), file));
+                PicVariable.voList.add(new PictureVo(picture.getIllustId(), picture.getUser(), mask + picture.getUserAvatar(), file));
                 downloadSuccess();
                 continue;
             }
@@ -88,29 +81,13 @@ public class OKHttpEditor extends Editor {
 
                     try {
                         FileCopyUtils.copy(response.body().bytes(), file);
-                        PicVariable.voList.add(new PictureVo(picture.getIllustId(), picture.getUser(), netMask + picture.getUserAvatar(), file));
+                        PicVariable.voList.add(new PictureVo(picture.getIllustId(), picture.getUser(), mask + picture.getUserAvatar(), file));
                     } catch (Exception e) {
                         downloadPictureSyn(picture);
                     }
                     downloadSuccess();
                 }
             });
-        }
-    }
-
-    @Override
-    public synchronized void downloadSuccess() {
-        if (++PicVariable.original_count >= PicVariable.pictures.size()) {
-            try {
-                log.info("下载图片完成, Link Start!!!----------------------");
-                login();
-                uploadImage();
-                generateFile();
-                saveArticle();
-                transferArticle();
-            } catch (Exception e) {
-                log.error("操作失败", e);
-            }
         }
     }
 
@@ -285,7 +262,7 @@ public class OKHttpEditor extends Editor {
             File file = new File(parentPath, pictureName);
             try {
                 FileCopyUtils.copy(response.body().bytes(), file);
-                PicVariable.voList.add(new PictureVo(picture.getIllustId(), picture.getUser(), netMask + picture.getUserAvatar(), file));
+                PicVariable.voList.add(new PictureVo(picture.getIllustId(), picture.getUser(), mask + picture.getUserAvatar(), file));
             } catch (Exception e) {
                 log.error("图片【" + url + "】download failed---------", e);
             }
@@ -293,7 +270,5 @@ public class OKHttpEditor extends Editor {
             log.error("file(" + url + ") request failed---------", e);
         }
     }
-
-
 
 }
