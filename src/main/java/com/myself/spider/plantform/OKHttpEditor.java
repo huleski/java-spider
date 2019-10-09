@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import freemarker.template.Template;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
+import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.util.FileCopyUtils;
 
@@ -18,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * @Date: 2019/8/1 09:34
  * @Description:
  */
-//@Component
+@Component
 @Slf4j
 public class OKHttpEditor extends Editor {
     private static OkHttpClient okHttpClient = null;
@@ -182,6 +183,10 @@ public class OKHttpEditor extends Editor {
 
         Request request = new Request.Builder()
                 .addHeader("X-Requested-With", "XMLHttpRequest")
+//                .addHeader("Cache-Control", "no-cache")
+//                .addHeader("Accept", "*/*")
+//                .addHeader("Accept-Encoding", "gzip, deflate")
+//                .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36 Edge/17.17134")
                 .post(formBody).url(saveUrl).build();
         try (Response response = okHttpClient.newCall(request).execute()) {
             if (!response.isSuccessful()) {

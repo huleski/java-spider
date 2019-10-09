@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -67,20 +66,6 @@ public class PicController {
         });
         PicVariable.pictures = pics;
         editor.downloadOriginalImg();
-        return "OK";
-    }
-
-    @RequestMapping("/test")
-    @ResponseBody
-    public String test() throws Exception {
-        List<PictureVo> pics = new ArrayList<>(2);
-        PictureVo p1 = new PictureVo("1", "holeski", "http://img.96weixin.com/ueditor/20190920/1568962918667079.jpg", "http://img.96weixin.com/ueditor/20190920/1568948364754606.jpg");
-        PictureVo p2 = new PictureVo("2", "holeski", "http://img.96weixin.com/ueditor/20190920/1568962918667079.jpg", "http://img.96weixin.com/ueditor/20190920/1568948365556753.jpg");
-        pics.add(p1);
-        pics.add(p2);
-        PicVariable.voList = pics;
-        editor.login();
-        editor.saveArticle();
         return "OK";
     }
 

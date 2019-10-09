@@ -42,4 +42,3 @@ logging:
     com.myself.spider: debug
     org.springframework: WARN
     org.spring.springboot.dao: debug
-

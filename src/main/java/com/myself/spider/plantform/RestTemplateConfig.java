@@ -15,10 +15,8 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -43,8 +41,8 @@ import java.util.List;
  * @author holeski
  * @date 2019-09-23
  */
-@Configuration
-@ConditionalOnClass(value = {RestTemplate.class, HttpClient.class})
+//@Configuration
+//@ConditionalOnClass(value = {RestTemplate.class, HttpClient.class})
 @Slf4j
 public class RestTemplateConfig {
 

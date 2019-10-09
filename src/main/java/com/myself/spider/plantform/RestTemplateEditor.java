@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
-import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.LinkedMultiValueMap;
@@ -25,7 +24,7 @@ import java.util.*;
  * @Date: 2019/9/23 09:34
  * @Description:
  */
-@Component
+//@Component
 @Slf4j
 public class RestTemplateEditor extends Editor {
     private List<String> cookie;

@@ -135,7 +135,7 @@ public abstract class Editor {
      *
      * @throws Exception
      */
-    void generateFile() throws Exception {
+    public void generateFile() throws Exception {
         Map map = new HashMap<>();
         map.put("pics", PicVariable.voList);
         Template template = configuration.getTemplate("file.ftl");
