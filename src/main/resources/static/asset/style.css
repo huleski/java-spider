@@ -177,31 +177,14 @@ p {
 
 .myButton {
     display: block;
-    width: 150px;
+    width: 80px;
     text-align: center;
     font-size: 22px;
     font-weight: 300;
     color: #fff;
-    line-height: 60px;
     background: #5c9cd8;
     border-radius: 4px;
     cursor: pointer;
     position: fixed;
-    right: 20px;
-}
-
-#tip {
-    display: block;
-    width: 150px;
-    text-align: center;
-    font-size: 22px;
-    font-weight: 300;
-    color: #fff;
-    line-height: 60px;
-    background: #3dd8d8;
-    border-radius: 4px;
-    cursor: pointer;
-    position: fixed;
-    top: 20px;
     right: 20px;
 }

@@ -31,6 +31,9 @@ public abstract class Editor {
     @Value("${pic.mask}")
     String mask;
 
+    @Value("${pic.proxy}")
+    String proxy;
+
     @Value("${platform.phone}")
     String phone;
 

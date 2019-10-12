@@ -157,8 +157,8 @@ function showlist(result) {
             arr.forEach(function(e, tmpInd){
                 var oDiv = document.createElement("div");
                 oDiv.className = "box";
-                elem = '<a href="' + e.orginUrl + '" alt ="' + item.title + '"  class="image" rel="https://www.pixiv.net/member_illust.php?mode=medium&illust_id=' + item.id + '">\
-                        <img src ="' + e.largeUrl + '" height ="' + imgH + '"  width="228" alt="' + item.title + '" referrerpolicy="no-referrer">\
+                elem = '<a href="https://bigimg.pixivic.com/get/' + e.orginUrl + '" alt ="' + item.title + '"  class="image" rel="https://www.pixiv.net/member_illust.php?mode=medium&illust_id=' + item.id + '">\
+                        <img src ="https://bigimg.pixivic.com/get/' + e.largeUrl + '" height ="' + imgH + '"  width="228" alt="' + item.title + '" referrerpolicy="no-referrer">\
                         </a>';
                 elem += item.title.length == 0 ? "" : '<p>' + item.title + '</p>';
 
