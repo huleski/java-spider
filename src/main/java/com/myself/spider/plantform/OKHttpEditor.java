@@ -55,7 +55,7 @@ public class OKHttpEditor extends Editor {
         PicVariable.voList.clear();
         log.info("开始下载图片.................................");
         for (Picture picture : PicVariable.pictures) {
-            String url = proxy + picture.getOriginalImg();
+            String url = picture.getOriginalImg().replace("https://i.pximg.net", local);
             File parentPath = new File(filePath + date);
             if (!parentPath.exists()) {
                 parentPath.mkdirs();
@@ -249,7 +249,7 @@ public class OKHttpEditor extends Editor {
      */
     @Override
     public void downloadPictureSyn(Picture picture) {
-        String url = proxy + picture.getFixedImg();
+        String url = picture.getFixedImg().replace("https://i.pximg.net", local);
         //构建request对象
         Request request = new Request.Builder().url(url).build();
         try (Response response = okHttpClient.newCall(request).execute()) {
