@@ -1,5 +1,6 @@
 package com.myself.spider.plantform;
 
+import cn.hutool.core.util.ZipUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import lombok.extern.slf4j.Slf4j;
@@ -82,9 +83,11 @@ public abstract class Editor {
         if (++PicVariable.original_count >= PicVariable.pictures.size()) {
             try {
                 log.info(PicVariable.pictures.size() + " 张图片下载完成, Link Start!!!----------------------");
+                ZipUtil.zip(filePath + articleDate);
                 login();
                 uploadImage();
-                generateFile();
+                // TODO: upload zip
+//                generateFile();
                 saveArticle();
 //                transferArticle();
             } catch (Exception e) {
