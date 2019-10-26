@@ -27,6 +27,14 @@ public class PicController {
     @Autowired
     private Editor editor;
 
+    private void execute(List<Picture> pictures){
+        PicVariable.pictures = pictures;
+        // 默认为明天的日期 editor.getTomorrow()
+        editor.articleDate = "2019-10-30";
+        editor.downloadOriginalImg();
+    }
+
+
     @RequestMapping(value = "/synchronize")
     @ResponseBody
     public Object synchronizeArticle(@RequestBody List<Picture> pics) throws Exception {
@@ -37,8 +45,7 @@ public class PicController {
             picture.setCreateDate(date);
         });
         List<Picture> pictures = pictureService.saveAll(pics);
-        PicVariable.pictures = pictures;
-        editor.downloadOriginalImg();
+        execute(pictures);
         return "OK";
     }
 
@@ -56,16 +63,15 @@ public class PicController {
 
     @RequestMapping("/today")
     @ResponseBody
-    public String today(String dateStr) throws Exception {
-        if (StringUtils.isEmpty(dateStr)) {
-            dateStr = date;
+    public String today(String createDate) throws Exception {
+        if (StringUtils.isEmpty(createDate)) {
+            createDate = date;
         }
-        List<Picture> pics = pictureService.findAllByCreateDate(dateStr);
+        List<Picture> pics = pictureService.findAllByCreateDate(createDate);
         pics.stream().sorted((o1, o2) -> {
             return o1.getUserAvatar().compareTo(o2.getUserAvatar());
         });
-        PicVariable.pictures = pics;
-        editor.downloadOriginalImg();
+        execute(pics);
         return "OK";
     }
 

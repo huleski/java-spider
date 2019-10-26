@@ -56,6 +56,7 @@ function addPictures(url){
         object.fixedImg = elem.fixedImg;
         object.pixImg = elem.pixImg;
         object.rankDate = date;
+        // noinspection JSAnnotator
         let tagsArr = new Array();
         elem.tags.forEach(function(item, index){
             tagsArr.push(item.name);

@@ -61,7 +61,10 @@ public abstract class Editor {
     @Autowired
     Configuration configuration;
 
-    String date = DateFormatUtils.format(new Date(), "yyyy-MM-dd");
+    /**
+     * 日期, 待初始化
+     */
+    public String articleDate;
 
     public abstract void login() throws Exception;
 
@@ -78,12 +81,12 @@ public abstract class Editor {
     public synchronized void downloadSuccess() {
         if (++PicVariable.original_count >= PicVariable.pictures.size()) {
             try {
-                log.info("下载图片完成, Link Start!!!----------------------");
+                log.info(PicVariable.pictures.size() + " 张图片下载完成, Link Start!!!----------------------");
                 login();
                 uploadImage();
                 generateFile();
                 saveArticle();
-                transferArticle();
+//                transferArticle();
             } catch (Exception e) {
                 log.error("操作失败", e);
             }
@@ -146,11 +149,11 @@ public abstract class Editor {
         map.put("pics", PicVariable.voList);
         Template template = configuration.getTemplate("file.ftl");
         String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, map);
-        File path = new File(filePath + date);
+        File path = new File(filePath + articleDate);
         if (!path.exists()) {
             path.mkdirs();
         }
-        FileUtils.writeStringToFile(new File(path, date + ".html"), content);
+        FileUtils.writeStringToFile(new File(path, articleDate + ".html"), content);
         log.info("生成文件成功---");
     }
 }

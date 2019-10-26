@@ -56,7 +56,7 @@ public class OKHttpEditor extends Editor {
         log.info("开始下载图片.................................");
         for (Picture picture : PicVariable.pictures) {
             String url = picture.getOriginalImg().replace("https://i.pximg.net", local);
-            File parentPath = new File(filePath + date);
+            File parentPath = new File(filePath + articleDate);
             if (!parentPath.exists()) {
                 parentPath.mkdirs();
             }
@@ -172,7 +172,7 @@ public class OKHttpEditor extends Editor {
         RequestBody formBody = new FormBody.Builder()
                 .add("cate_id", "0")
                 .add("id", "6092731")
-                .add("name", "【每日精选】" + getTomorrow() + " 精选图集")
+                .add("name", "【每日精选】" + articleDate + " 精选图集")
                 .add("summary", "精选图集")
                 .add("thumbnail", "http://img.96weixin.com/ueditor/20190815/156587409910137683325518.jpg")
                 .add("author", "CryCat")
@@ -260,7 +260,7 @@ public class OKHttpEditor extends Editor {
 
             String pictureName = picture.getUser().replaceAll("[//\\\\:*?\"<>|]", "") +
                     " •「" + picture.getIllustId() + "(" + picture.getSort() + ")」" + "." + getExtension(url);
-            File parentPath = new File(filePath + date);
+            File parentPath = new File(filePath + articleDate);
             if (!parentPath.exists()) {
                 parentPath.mkdirs();
             }
