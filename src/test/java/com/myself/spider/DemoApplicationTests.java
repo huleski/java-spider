@@ -1,6 +1,5 @@
 package com.myself.spider;
 
-import cn.hutool.core.util.ZipUtil;
 import com.myself.spider.plantform.Editor;
 import com.myself.spider.plantform.PicVariable;
 import com.myself.spider.plantform.PictureVo;
@@ -64,7 +63,8 @@ public class DemoApplicationTests {
 
     @Test
     public void testCompress() throws Exception {
-        ZipUtil.zip("E:\\Document\\picture\\wx\\2019-10-29");
+        editor.articleDate = "2019-10-29";
+        editor.uploadZipPackage();
     }
 
 }

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -58,6 +59,21 @@ public abstract class Editor {
 
     @Value("${platform.imgPrefix}")
     String imgPrefix;
+
+    @Value("${lanzou.loginUrl}")
+    String lanzouLoginUrl;
+
+    @Value("${lanzou.uid}")
+    String lanzouUid;
+
+    @Value("${lanzou.pwd}")
+    String lanzouPwd;
+
+    @Value("${lanzou.upload}")
+    String lanzouUpload;
+
+    @Value("${lanzou.folderId}")
+    String lanzouFolderId;
 
     @Autowired
     Configuration configuration;
@@ -159,4 +175,6 @@ public abstract class Editor {
         FileUtils.writeStringToFile(new File(path, articleDate + ".html"), content);
         log.info("生成文件成功---");
     }
+
+    public abstract void uploadZipPackage() throws IOException;
 }

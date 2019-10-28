@@ -1,5 +1,6 @@
 package com.myself.spider.plantform;
 
+import cn.hutool.core.util.ZipUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import freemarker.template.Template;
@@ -276,4 +277,49 @@ public class OKHttpEditor extends Editor {
         }
     }
 
+    @Override
+    public void uploadZipPackage() throws IOException {
+        // 压缩
+        File zip = ZipUtil.zip(new File(filePath + articleDate));
+
+        if (!PicVariable.isLanzouLogin) {   // 未登录
+            HashMap params = new HashMap<>();
+            params.put("task", "3");
+            params.put("uid", lanzouUid);
+            params.put("pwd", lanzouPwd);
+            params.put("formhash", "002b2898");
+
+            Request request = new Request.Builder()
+                    .addHeader("X-Requested-With", "XMLHttpRequest")
+                    .post(getRequestBody(params)).url(lanzouLoginUrl).build();
+            try (Response response = okHttpClient.newCall(request).execute()) {
+                if (!response.isSuccessful()) {
+                    log.error("登录失败", response);
+                    throw new IOException("Unexpected code " + response);
+                }
+                PicVariable.isLanzouLogin = true;
+                log.info("lanzou登录成功------------------------------");
+            }
+        }
+
+        RequestBody zipFile = RequestBody.create(MediaType.parse("multipart/form-data"), zip);
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("upload_file", zip.getAbsolutePath(), zipFile)
+                .addFormDataPart("task", "1")
+                .addFormDataPart("folder_id", lanzouFolderId)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(lanzouUpload)
+                .post(requestBody)
+                .build();
+        try (Response response = okHttpClient.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                log.info("图片压缩包上传异常");
+                throw new IOException("Unexpected code " + response);
+            }
+            log.info("图片压缩包上传成功");
+        }
+    }
 }

@@ -215,4 +215,10 @@ public class RestTemplateEditor extends Editor {
             log.error("file(" + url + ") request is not OK---------", response);
         }
     }
+
+    @Override
+    public void uploadZipPackage() throws IOException {
+
+    }
+
 }

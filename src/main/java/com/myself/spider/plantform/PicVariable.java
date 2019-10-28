@@ -14,4 +14,6 @@ public abstract class PicVariable {
     public volatile static List<Picture> pictures;
     public volatile static List<PictureVo> voList = new ArrayList<>();
     public volatile static boolean isLogin = false;
+    public volatile static boolean isLanzouLogin = false;
+
 }
