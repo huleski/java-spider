@@ -29,8 +29,9 @@ public class PicController {
 
     private void execute(List<Picture> pictures){
         PicVariable.pictures = pictures;
-        // 默认为明天的日期 editor.getTomorrow()
-        editor.articleDate = "2019-10-30";
+//         默认为明天的日期
+//        editor.articleDate = "2019-10-30";
+        editor.articleDate = editor.getTomorrow();
         editor.downloadOriginalImg();
     }
 
@@ -74,6 +75,5 @@ public class PicController {
         execute(pics);
         return "OK";
     }
-
 }
 

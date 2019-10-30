@@ -39,6 +39,9 @@ public abstract class Editor {
     @Value("${pic.local}")
     String local;
 
+    @Value("${pic.cat}")
+    String cat;
+
     @Value("${platform.phone}")
     String phone;
 
@@ -102,7 +105,7 @@ public abstract class Editor {
                 ZipUtil.zip(filePath + articleDate);
                 login();
                 uploadImage();
-                // TODO: upload zip
+                uploadZipPackage();
 //                generateFile();
                 saveArticle();
 //                transferArticle();

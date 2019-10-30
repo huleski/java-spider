@@ -65,7 +65,7 @@ public class OKHttpEditor extends Editor {
                     " •「" + picture.getIllustId() + "(" + picture.getSort() + ")」" + "." + getExtension(url);
             File file = new File(parentPath, pictureName);
             if (file.exists()) {
-                PicVariable.voList.add(new PictureVo(picture.getIllustId(), picture.getUser(), mask + picture.getUserAvatar(), file));
+                PicVariable.voList.add(new PictureVo(picture.getIllustId(), picture.getUser(), picture.getUserAvatar().replace("https://i.pximg.net", cat), file));
                 downloadSuccess();
                 continue;
             }
@@ -83,7 +83,7 @@ public class OKHttpEditor extends Editor {
 
                     try {
                         FileCopyUtils.copy(response.body().bytes(), file);
-                        PicVariable.voList.add(new PictureVo(picture.getIllustId(), picture.getUser(), mask + picture.getUserAvatar(), file));
+                        PicVariable.voList.add(new PictureVo(picture.getIllustId(), picture.getUser(), picture.getUserAvatar().replace("https://i.pximg.net", cat), file));
                     } catch (Exception e) {
                         downloadPictureSyn(picture);
                     }
@@ -115,7 +115,7 @@ public class OKHttpEditor extends Editor {
                 throw new IOException("Unexpected code " + response);
             }
             PicVariable.isLogin = true;
-            log.info("登录成功------------------------------");
+            log.info("登录成功, 开始上传------------------------------");
         }
     }
 
@@ -268,7 +268,7 @@ public class OKHttpEditor extends Editor {
             File file = new File(parentPath, pictureName);
             try {
                 FileCopyUtils.copy(response.body().bytes(), file);
-                PicVariable.voList.add(new PictureVo(picture.getIllustId(), picture.getUser(), mask + picture.getUserAvatar(), file));
+                PicVariable.voList.add(new PictureVo(picture.getIllustId(), picture.getUser(), picture.getUserAvatar().replace("https://i.pximg.net", cat), file));
             } catch (Exception e) {
                 log.error("图片【" + url + "】download failed---------", e);
             }
@@ -298,7 +298,7 @@ public class OKHttpEditor extends Editor {
                     throw new IOException("Unexpected code " + response);
                 }
                 PicVariable.isLanzouLogin = true;
-                log.info("lanzou登录成功------------------------------");
+                log.info("lanzou登录成功, 开始上传------------------------------");
             }
         }
 
