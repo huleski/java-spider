@@ -6,7 +6,8 @@ var columnH = [],
     flag = false, 
     date = "",
     baseUrl = "http://localhost:9000",
-    url = 'https://api.pixivic.com/';
+    url = 'https://api.pixivic.com/',
+    picPrefix = 'http://localhost:8888'
 
 function getDay(page, str) {
     var today = new Date();
@@ -158,8 +159,8 @@ function showlist(result) {
             arr.forEach(function(e, tmpInd){
                 var oDiv = document.createElement("div");
                 oDiv.className = "box";
-                elem = '<a href="' + e.orginUrl.replace("https://i.pximg.net","http://localhost") + '" alt ="' + item.title + '"  class="image" rel="https://www.pixiv.net/member_illust.php?mode=medium&illust_id=' + item.id + '">\
-                        <img src ="' + e.largeUrl.replace("https://i.pximg.net","http://localhost") + '" height ="' + imgH + '"  width="228" alt="' + item.title + '" referrerpolicy="no-referrer">\
+                elem = '<a href="' + e.orginUrl.replace("https://i.pximg.net",picPrefix) + '" alt ="' + item.title + '"  class="image" rel="https://www.pixiv.net/member_illust.php?mode=medium&illust_id=' + item.id + '">\
+                        <img src ="' + e.largeUrl.replace("https://i.pximg.net",picPrefix) + '" height ="' + imgH + '"  width="228" alt="' + item.title + '" referrerpolicy="no-referrer">\
                         </a>';
                 elem += item.title.length == 0 ? "" : '<p>' + item.title + '</p>';
 
