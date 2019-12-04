@@ -33,8 +33,11 @@ public class PictureService {
     }
 
     public List<Picture> saveAll(List<Picture> pics) {
-        pics.forEach(picture -> {
-        });
+        List list = dao.saveAll(pics);
+        return list;
+    }
+
+    public List<Picture> saveAllUnsaved(List<Picture> pics) {
         List<Picture> collect = pics.stream().filter(picture -> {
             List<Picture> results = dao.findAllByIllustIdAndSort(picture.getIllustId(), picture.getSort());
             return results == null || results.size() < 1;

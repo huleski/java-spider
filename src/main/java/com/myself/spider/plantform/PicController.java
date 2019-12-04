@@ -31,7 +31,8 @@ public class PicController {
         PicVariable.pictures = pictures;
 //         默认为明天的日期
 //        editor.articleDate = "2019-10-30";
-        editor.articleDate = editor.getTomorrow();
+//        editor.articleDate = editor.getTomorrow();
+        editor.articleDate = date;
         editor.downloadOriginalImg();
     }
 
@@ -45,7 +46,7 @@ public class PicController {
         }).forEach(picture -> {
             picture.setCreateDate(date);
         });
-        List<Picture> pictures = pictureService.saveAll(pics);
+        List<Picture> pictures = pictureService.saveAllUnsaved(pics);
         execute(pictures);
         return "OK";
     }
