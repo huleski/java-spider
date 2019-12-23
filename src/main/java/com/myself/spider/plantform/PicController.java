@@ -59,7 +59,7 @@ public class PicController {
         }).forEach(picture -> {
             picture.setCreateDate(date);
         });
-        pictureService.saveAll(pics);
+        pictureService.saveAllUnsaved(pics);
         return "OK";
     }
 
