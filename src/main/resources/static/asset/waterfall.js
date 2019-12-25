@@ -7,7 +7,7 @@ var columnH = [],
     date = "",
     baseUrl = "http://localhost:9000",
     url = 'https://api.pixivic.com/',
-    picPrefix = 'http://localhost:8888'
+    picPrefix = 'http://localhost:9001'
 
 function getDay(page, str) {
     var today = new Date();

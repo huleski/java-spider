@@ -26,7 +26,8 @@ import java.util.*;
  */
 //@Component
 @Slf4j
-public class RestTemplateEditor extends Editor {
+public class RestTemplateEditor extends Editor
+{
     private List<String> cookie;
 
     @Autowired
@@ -45,7 +46,7 @@ public class RestTemplateEditor extends Editor {
         log.info("开始下载图片.................................");
         for (Picture picture : PicVariable.pictures) {
             String url = picture.getOriginalImg();
-            File parentPath = new File(filePath + articleDate);
+            File parentPath = new File(filePath + PicVariable.date);
             if (!parentPath.exists()) {
                 parentPath.mkdirs();
             }
@@ -147,7 +148,7 @@ public class RestTemplateEditor extends Editor {
         LinkedMultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
         params.put("cate_id", Collections.singletonList("0"));
         params.put("id", Collections.singletonList("6092731"));
-        params.put("name", Collections.singletonList("【每日精选】" + articleDate + " 精选图集"));
+        params.put("name", Collections.singletonList("【每日精选】" + PicVariable.date + " 精选图集"));
         params.put("summary", Collections.singletonList("精选图集"));
         params.put("thumbnail", Collections.singletonList("http://img.96weixin.com/ueditor/20190815/156587409910137683325518.jpg"));
         params.put("author", Collections.singletonList("CryCat"));
@@ -200,7 +201,7 @@ public class RestTemplateEditor extends Editor {
 
         String pictureName = picture.getUser().replaceAll("[//\\\\:*?\"<>|]", "") +
                 " •「" + picture.getIllustId() + "(" + picture.getSort() + ")」" + "." + getExtension(url);
-        File parentPath = new File(filePath + articleDate);
+        File parentPath = new File(filePath + PicVariable.date);
         if (!parentPath.exists()) {
             parentPath.mkdirs();
         }

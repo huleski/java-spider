@@ -63,7 +63,6 @@ public class DemoApplicationTests {
 
     @Test
     public void testCompress() throws Exception {
-        editor.articleDate = "2019-10-29";
         editor.uploadZipPackage();
     }
 

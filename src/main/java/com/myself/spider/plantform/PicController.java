@@ -1,14 +1,12 @@
 package com.myself.spider.plantform;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,7 +17,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/pic")
 public class PicController {
-    private String date = DateFormatUtils.format(new Date(), "yyyy-MM-dd");
+//    private String date = DateFormatUtils.format(new Date(), "yyyy-MM-dd");
 
     @Autowired
     private PictureService pictureService;
@@ -29,10 +27,6 @@ public class PicController {
 
     private void execute(List<Picture> pictures){
         PicVariable.pictures = pictures;
-//         默认为明天的日期
-//        editor.articleDate = "2019-10-30";
-//        editor.articleDate = editor.getTomorrow();
-        editor.articleDate = date;
         editor.downloadOriginalImg();
     }
 
@@ -44,7 +38,7 @@ public class PicController {
         pics.stream().sorted((o1, o2) -> {
             return o1.getUserAvatar().compareTo(o2.getUserAvatar());
         }).forEach(picture -> {
-            picture.setCreateDate(date);
+            picture.setCreateDate(PicVariable.date);
         });
         List<Picture> pictures = pictureService.saveAllUnsaved(pics);
         execute(pictures);
@@ -57,7 +51,7 @@ public class PicController {
         pics.stream().sorted((o1, o2) -> {
             return o1.getUserAvatar().compareTo(o2.getUserAvatar());
         }).forEach(picture -> {
-            picture.setCreateDate(date);
+            picture.setCreateDate(PicVariable.date);
         });
         pictureService.saveAllUnsaved(pics);
         return "OK";
@@ -67,7 +61,7 @@ public class PicController {
     @ResponseBody
     public String today(String createDate) throws Exception {
         if (StringUtils.isEmpty(createDate)) {
-            createDate = date;
+            createDate = PicVariable.date;
         }
         List<Picture> pics = pictureService.findAllByCreateDate(createDate);
         pics.stream().sorted((o1, o2) -> {
@@ -76,5 +70,6 @@ public class PicController {
         execute(pics);
         return "OK";
     }
+
 }
 

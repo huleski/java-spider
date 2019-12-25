@@ -8,15 +8,12 @@ import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -84,7 +81,7 @@ public abstract class Editor {
     /**
      * 日期, 待初始化
      */
-    public String articleDate;
+//    public String articleDate;
 
     public abstract void login() throws Exception;
 
@@ -102,13 +99,14 @@ public abstract class Editor {
         if (++PicVariable.original_count >= PicVariable.pictures.size()) {
             try {
                 log.info(PicVariable.pictures.size() + " 张图片下载完成, Link Start!!!----------------------");
-                ZipUtil.zip(filePath + articleDate);
+                ZipUtil.zip(filePath + PicVariable.date);
+                uploadZipPackage();
                 login();
                 uploadImage();
-                uploadZipPackage();
 //                generateFile();
                 saveArticle();
 //                transferArticle();
+                System.exit(1);
             } catch (Exception e) {
                 log.error("操作失败", e);
             }
@@ -127,18 +125,6 @@ public abstract class Editor {
             extension = "jpg";
         }
         return extension;
-    }
-
-    /**
-     * 返回明天日期
-     *
-     * @return
-     */
-    public String getTomorrow() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + 1);
-        return DateFormatUtils.format(calendar.getTime(), "yyyy-MM-dd");
     }
 
     /**
@@ -171,11 +157,11 @@ public abstract class Editor {
         map.put("pics", PicVariable.voList);
         Template template = configuration.getTemplate("file.ftl");
         String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, map);
-        File path = new File(filePath + articleDate);
+        File path = new File(filePath + PicVariable.date);
         if (!path.exists()) {
             path.mkdirs();
         }
-        FileUtils.writeStringToFile(new File(path, articleDate + ".html"), content);
+        FileUtils.writeStringToFile(new File(path, PicVariable.date + ".html"), content);
         log.info("生成文件成功---");
     }
 
