@@ -8,12 +8,15 @@ import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -81,25 +84,14 @@ public abstract class Editor {
     /**
      * 日期, 待初始化
      */
-//    public String articleDate;
-
-    public abstract void login() throws Exception;
-
-    public abstract void downloadOriginalImg();
-
-    public abstract void uploadImage() throws Exception;
-
-    public abstract void saveArticle() throws Exception;
-
-    public abstract void transferArticle() throws Exception;
-
-    public abstract void downloadPictureSyn(Picture picture);
+    public String date = DateFormatUtils.format(new Date(), "yyyy-MM-dd");
+//    public static String date = getTomorrow();
 
     public synchronized void downloadSuccess() {
         if (++PicVariable.original_count >= PicVariable.pictures.size()) {
             try {
                 log.info(PicVariable.pictures.size() + " 张图片下载完成, Link Start!!!----------------------");
-                ZipUtil.zip(filePath + PicVariable.date);
+                ZipUtil.zip(filePath + date);
                 uploadZipPackage();
                 login();
                 uploadImage();
@@ -112,6 +104,18 @@ public abstract class Editor {
             }
         }
     }
+
+    public abstract void login() throws Exception;
+
+    public abstract void downloadOriginalImg();
+
+    public abstract void uploadImage() throws Exception;
+
+    public abstract void saveArticle() throws Exception;
+
+    public abstract void transferArticle() throws Exception;
+
+    public abstract void downloadPictureSyn(Picture picture);
 
     /**
      * 获取文件名的后缀
@@ -157,13 +161,25 @@ public abstract class Editor {
         map.put("pics", PicVariable.voList);
         Template template = configuration.getTemplate("file.ftl");
         String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, map);
-        File path = new File(filePath + PicVariable.date);
+        File path = new File(filePath + date);
         if (!path.exists()) {
             path.mkdirs();
         }
-        FileUtils.writeStringToFile(new File(path, PicVariable.date + ".html"), content);
+        FileUtils.writeStringToFile(new File(path, date + ".html"), content);
         log.info("生成文件成功---");
     }
 
     public abstract void uploadZipPackage() throws IOException;
+
+    /**
+     * 返回明天日期
+     *
+     * @return
+     */
+    public static String getTomorrow() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + 1);
+        return DateFormatUtils.format(calendar.getTime(), "yyyy-MM-dd");
+    }
 }

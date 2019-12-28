@@ -38,7 +38,7 @@ public class PicController {
         pics.stream().sorted((o1, o2) -> {
             return o1.getUserAvatar().compareTo(o2.getUserAvatar());
         }).forEach(picture -> {
-            picture.setCreateDate(PicVariable.date);
+            picture.setCreateDate(editor.date);
         });
         List<Picture> pictures = pictureService.saveAllUnsaved(pics);
         execute(pictures);
@@ -51,7 +51,7 @@ public class PicController {
         pics.stream().sorted((o1, o2) -> {
             return o1.getUserAvatar().compareTo(o2.getUserAvatar());
         }).forEach(picture -> {
-            picture.setCreateDate(PicVariable.date);
+            picture.setCreateDate(editor.date);
         });
         pictureService.saveAllUnsaved(pics);
         return "OK";
@@ -61,7 +61,7 @@ public class PicController {
     @ResponseBody
     public String today(String createDate) throws Exception {
         if (StringUtils.isEmpty(createDate)) {
-            createDate = PicVariable.date;
+            createDate = editor.date;
         }
         List<Picture> pics = pictureService.findAllByCreateDate(createDate);
         pics.stream().sorted((o1, o2) -> {
