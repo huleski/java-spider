@@ -171,6 +171,7 @@ public class OKHttpEditor extends Editor {
     public void saveArticle() throws Exception {
         Map map = new HashMap<>();
         map.put("pics", PicVariable.voList);
+        map.put("lanzouShareUrl", lanzouShareUrl);
         Template template = configuration.getTemplate("article.ftl");
         String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, map);
 
@@ -180,6 +181,7 @@ public class OKHttpEditor extends Editor {
                 .add("id", "6092731")
                 .add("name", "【每日精选】" + date + " 精选图集")
                 .add("summary", "精选图集")
+                .add("link", lanzouShareUrl)
                 .add("thumbnail", "http://img.96weixin.com/ueditor/20190815/156587409910137683325518.jpg")
                 .add("author", "CryCat")
                 .add("artcover", "0")

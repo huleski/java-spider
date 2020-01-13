@@ -1,6 +1,5 @@
 package com.myself.spider.plantform;
 
-import cn.hutool.core.util.ZipUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import lombok.extern.slf4j.Slf4j;
@@ -78,20 +77,21 @@ public abstract class Editor {
     @Value("${lanzou.folderId}")
     String lanzouFolderId;
 
+    @Value("${lanzou.shareUrl}")
+    String lanzouShareUrl;
+
     @Autowired
     Configuration configuration;
 
-    /**
-     * 日期, 待初始化
-     */
-    public String date = DateFormatUtils.format(new Date(), "yyyy-MM-dd");
+    public String date = "2020-01-12";
+//    public String date = DateFormatUtils.format(new Date(), "yyyy-MM-dd");
 //    public static String date = getTomorrow();
 
     public synchronized void downloadSuccess() {
         if (++PicVariable.original_count >= PicVariable.pictures.size()) {
             try {
                 log.info(PicVariable.pictures.size() + " 张图片下载完成, Link Start!!!----------------------");
-                ZipUtil.zip(filePath + date);
+//                ZipUtil.zip(filePath + date);
                 uploadZipPackage();
                 login();
                 uploadImage();
