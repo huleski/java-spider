@@ -182,7 +182,7 @@ public class OKHttpEditor extends Editor {
                 .add("name", "【每日精选】" + date + " 精选图集")
                 .add("summary", "精选图集")
                 .add("link", lanzouShareUrl)
-                .add("thumbnail", "http://img.96weixin.com/ueditor/20190815/156587409910137683325518.jpg")
+                .add("thumbnail", "http://img.96weixin.com/ueditor/20200114/157900381610137683314803.jpg")
                 .add("author", "CryCat")
                 .add("artcover", "0")
                 .add("original", "true")
