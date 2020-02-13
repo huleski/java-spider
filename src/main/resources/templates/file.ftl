@@ -60,9 +60,7 @@
                         >
                         <section
                             style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;text-align: justify;font-size: 14px;box-sizing: border-box;">
-                            <p style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;white-space: normal;box-sizing: border-box;">
-                                ${pic.user} •「${pic.illustId}」
-                            </p>
+                            <p style="border:none;max-width:100%;box-sizing: border-box !important; word-wrap: break-word !important;white-space: normal;box-sizing: border-box;">${pic.user}<#if pic.user ? length gt 10></br></#if> •「${pic.illustId}」</p>
                         </section>
                     </section>
                 </section>
