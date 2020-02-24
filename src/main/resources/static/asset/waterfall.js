@@ -132,7 +132,7 @@ function post(url, data, callback) {
  * @param {*} data 
  */
 function showlist(result) {
-    var dataArr = JSON.parse(result).data.data,
+    var dataArr = JSON.parse(result).data,
         elem = '',
         imgH = 0,
         content = document.getElementById("waterfall"),
