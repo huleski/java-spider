@@ -1,5 +1,6 @@
 package com.myself.spider.plantform;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
  * @Description:
  */
 @Service
+@Slf4j
 public class PictureService {
     @Autowired
     private PictureRepository dao;
@@ -43,6 +45,7 @@ public class PictureService {
             return results == null || results.size() < 1;
         }).collect(Collectors.toList());
         List list = dao.saveAll(collect);
+        log.info("保存了" + list.size() + "张图片");
         return collect;
     }
 

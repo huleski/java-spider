@@ -1,3 +1,4 @@
+/*
 package com.myself.spider.plantform;
 
 import com.alibaba.fastjson.JSONObject;
@@ -19,11 +20,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+*/
 /**
  * @Author: Holeski
  * @Date: 2019/9/23 09:34
  * @Description:
- */
+ *//*
+
 //@Component
 @Slf4j
 public class RestTemplateEditor extends Editor
@@ -36,9 +39,11 @@ public class RestTemplateEditor extends Editor
     @Autowired
     private AsyncRestTemplate asyncRestTemplate;
 
-    /**
+    */
+/**
      * 图片异步下载
-     */
+     *//*
+
     @Override
     public void downloadOriginalImg() {
         PicVariable.original_count = 0;
@@ -72,9 +77,11 @@ public class RestTemplateEditor extends Editor
         }
     }
 
-    /**
+    */
+/**
      * 登录
-     */
+     *//*
+
     @Override
     public void login() throws Exception {
         if (PicVariable.isLogin) {
@@ -98,12 +105,14 @@ public class RestTemplateEditor extends Editor
         }
     }
 
-    /**
+    */
+/**
      * 上传图片
      *
      * @return 新图片的路径
      * @throws Exception
-     */
+     *//*
+
     @Override
     public void uploadImage() throws Exception {
         for (int i = 0; i < PicVariable.voList.size(); i++) {
@@ -132,9 +141,11 @@ public class RestTemplateEditor extends Editor
         }
     }
 
-    /**
+    */
+/**
      * 保存
-     */
+     *//*
+
     @Override
     public void saveArticle() throws Exception {
         Map map = new HashMap<>();
@@ -161,9 +172,11 @@ public class RestTemplateEditor extends Editor
         log.info("文章保存完成------------------------------");
     }
 
-    /**
+    */
+/**
      * 同步
-     */
+     *//*
+
     @Override
     public void transferArticle() throws Exception {
         for (int i = 0; i < 3; i++) {
@@ -192,9 +205,11 @@ public class RestTemplateEditor extends Editor
     }
 
 
-    /**
+    */
+/**
      * 文件同步下载
-     */
+     *//*
+
     @Override
     public void downloadPictureSyn(Picture picture) {
         String url = picture.getFixedImg();
@@ -223,3 +238,4 @@ public class RestTemplateEditor extends Editor
     }
 
 }
+*/
