@@ -326,7 +326,10 @@ public class OKHttpEditor extends Editor {
                 log.info("图片压缩包上传异常");
                 throw new IOException("Unexpected code " + response);
             }
-            log.info("图片压缩包上传成功");
+            JSONObject jsonObject = JSON.parseObject(response.body().string());
+            if (jsonObject.getInteger("zt") == 1) {
+                log.info("图片压缩包上传成功");
+            }
         }
     }
 }
