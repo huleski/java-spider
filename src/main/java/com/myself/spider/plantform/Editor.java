@@ -8,15 +8,12 @@ import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -87,20 +84,17 @@ public abstract class Editor {
     @Autowired
     Configuration configuration;
 
-    public String date = "2020-02-13";
-//    public String date = DateFormatUtils.format(new Date(), "yyyy-MM-dd");
-//    public static String date = getTomorrow();
+    public String date = "2020-04-01";
 
     public synchronized void downloadSuccess() {
         if (++PicVariable.original_count >= PicVariable.pictures.size()) {
             try {
                 log.info(PicVariable.pictures.size() + " 张图片下载完成, Link Start!!!----------------------");
                 ZipUtil.zip(filePath + date);
-                uploadZipPackage();
+//                uploadZipPackage();
                 login();
                 uploadImage();
                 saveArticle();
-//                generateFile();
 //                transferArticle();
                 System.exit(1);
             } catch (Exception e) {
@@ -174,16 +168,4 @@ public abstract class Editor {
     }
 
     public abstract void uploadZipPackage() throws IOException;
-
-    /**
-     * 返回明天日期
-     *
-     * @return
-     */
-    public static String getTomorrow() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + 1);
-        return DateFormatUtils.format(calendar.getTime(), "yyyy-MM-dd");
-    }
 }

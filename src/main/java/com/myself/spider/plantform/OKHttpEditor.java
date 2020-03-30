@@ -221,7 +221,7 @@ public class OKHttpEditor extends Editor {
             } else {
                 type = "art";
             }
-            HashMap params = new HashMap<>();
+            HashMap params = new HashMap<>(3);
             params.put("art_id", "6092731");
             params.put("wechat_id", "179085");
             params.put("type", type);
@@ -232,8 +232,10 @@ public class OKHttpEditor extends Editor {
             try (Response response = okHttpClient.newCall(request).execute()) {
                 if (!response.isSuccessful()) {
                     transferArticle();
+                    return;
                 }
             }
+            Thread.sleep(30 * 1000);
         }
         log.info("文章同步完成------------------------------");
     }

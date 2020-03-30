@@ -1,8 +1,7 @@
 package com.myself.spider;
 
-import com.myself.spider.plantform.Editor;
-import com.myself.spider.plantform.PicVariable;
-import com.myself.spider.plantform.PictureVo;
+import com.myself.spider.plantform.*;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
@@ -16,11 +15,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
+@Slf4j
 public class DemoApplicationTests {
     private final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
     private static OkHttpClient okHttpClient = null;
@@ -28,6 +29,9 @@ public class DemoApplicationTests {
 
     @Autowired
     private Editor editor;
+
+    @Autowired
+    private PictureService pictureService;
 
 //    @Before
     public void initClient() {
@@ -49,10 +53,18 @@ public class DemoApplicationTests {
     }
 
     @Test
+    public void today() {
+        List<Picture> pics = pictureService.findAllByCreateDate(editor.date);
+        pics.stream().sorted(Comparator.comparing(Picture::getUserAvatar));
+        PicVariable.pictures = pics;
+        editor.downloadOriginalImg();
+    }
+
+    @Test
     public void contextLoads() throws Exception {
         List<PictureVo> pics = new ArrayList<>(2);
-        PictureVo p1 = new PictureVo("1", "holeski", "http://img.96weixin.com/ueditor/20190920/1568962918667079.jpg", "http://img.96weixin.com/ueditor/20190920/1568948364754606.jpg");
-        PictureVo p2 = new PictureVo("2", "holeskicongroo", "http://img.96weixin.com/ueditor/20190920/1568962918667079.jpg", "http://img.96weixin.com/ueditor/20190920/1568948365556753.jpg");
+        PictureVo p1 = new PictureVo("75438543", "holeski", "http://img.96weixin.com/ueditor/20190920/1568962918667079.jpg", "https://img.96weixin.com/ueditor/20200329/1585445095715927.jpg");
+        PictureVo p2 = new PictureVo("75456736", "holeskicongroo", "http://img.96weixin.com/ueditor/20190920/1568962918667079.jpg", "https://img.96weixin.com/ueditor/20200329/1585445090941980.png");
         pics.add(p1);
         pics.add(p2);
         PicVariable.voList = pics;
