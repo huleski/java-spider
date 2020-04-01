@@ -54,7 +54,7 @@ public class OKHttpEditor extends Editor {
     public void downloadOriginalImg() {
         PicVariable.original_count = 0;
         PicVariable.voList.clear();
-        log.info("开始下载图片.................................");
+        log.info("正在下载【" + PicVariable.pictures.size() + "】张图片.................................");
         for (Picture picture : PicVariable.pictures) {
             String url = picture.getOriginalImg().replace("https://i.pximg.net", local);
             File parentPath = new File(filePath + date);

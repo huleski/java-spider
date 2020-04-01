@@ -84,12 +84,12 @@ public abstract class Editor {
     @Autowired
     Configuration configuration;
 
-    public String date = "2020-04-01";
+    public String date = "2020-04-02";
 
     public synchronized void downloadSuccess() {
         if (++PicVariable.original_count >= PicVariable.pictures.size()) {
             try {
-                log.info(PicVariable.pictures.size() + " 张图片下载完成, Link Start!!!----------------------");
+                log.info("图片下载完成, Link Start!!!----------------------");
                 ZipUtil.zip(filePath + date);
 //                uploadZipPackage();
                 login();

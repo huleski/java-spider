@@ -1,6 +1,5 @@
 package com.myself.spider.plantform;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Auther: Holeski
@@ -18,7 +18,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/pic")
 public class PicController {
-//    private String date = DateFormatUtils.format(new Date(), "yyyy-MM-dd");
 
     @Autowired
     private PictureService pictureService;
@@ -28,36 +27,28 @@ public class PicController {
 
     @RequestMapping(value = "/synchronize")
     @ResponseBody
-    public Object synchronizeArticle(@RequestBody List<Picture> pics) throws Exception {
+    public Object synchronizeArticle(@RequestBody List<Picture> pics) {
         // 排序
-        pics.stream().sorted(Comparator.comparing(Picture::getUserAvatar)).forEach(picture -> {
-            picture.setCreateDate(editor.date);
-        });
-        List<Picture> pictures = pictureService.saveAllUnsaved(pics);
-        PicVariable.pictures = pictures;
+        List<Picture> collect = pics.stream().sorted(Comparator.comparing(Picture::getUser)).collect(Collectors.toList());
+        collect.forEach(picture -> picture.setCreateDate(editor.date));
+        PicVariable.pictures = pictureService.saveAllUnsaved(collect);
         editor.downloadOriginalImg();
         return "OK";
     }
 
     @RequestMapping("/save")
     @ResponseBody
-    public String save(@RequestBody List<Picture> pics) throws Exception {
-        pics.stream().sorted(Comparator.comparing(Picture::getUserAvatar)).forEach(picture -> {
-            picture.setCreateDate(editor.date);
-        });
-        pictureService.saveAllUnsaved(pics);
+    public String save(@RequestBody List<Picture> pics) {
+        List<Picture> collect = pics.stream().sorted(Comparator.comparing(Picture::getUser)).collect(Collectors.toList());
+        collect.forEach(picture -> picture.setCreateDate(editor.date));
+        pictureService.saveAllUnsaved(collect);
         return "OK";
     }
 
     @RequestMapping("/today")
     @ResponseBody
-    public String today(String createDate) throws Exception {
-        if (StringUtils.isEmpty(createDate)) {
-            createDate = editor.date;
-        }
-        List<Picture> pics = pictureService.findAllByCreateDate(createDate);
-        pics.stream().sorted(Comparator.comparing(Picture::getUserAvatar));
-        PicVariable.pictures = pics;
+    public String today() {
+        PicVariable.pictures = pictureService.findAllByCreateDate(editor.date);
         editor.downloadOriginalImg();
         return "OK";
     }

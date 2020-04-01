@@ -1,26 +1,25 @@
 package com.myself.spider;
 
-import com.myself.spider.plantform.*;
+import com.myself.spider.plantform.Editor;
+import com.myself.spider.plantform.PicVariable;
+import com.myself.spider.plantform.PictureService;
+import com.myself.spider.plantform.PictureVo;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
-@SpringBootTest
-@RunWith(SpringRunner.class)
+//@SpringBootTest
+//@RunWith(SpringRunner.class)
 @Slf4j
 public class DemoApplicationTests {
     private final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
@@ -54,21 +53,20 @@ public class DemoApplicationTests {
 
     @Test
     public void today() {
-        List<Picture> pics = pictureService.findAllByCreateDate(editor.date);
-        pics.stream().sorted(Comparator.comparing(Picture::getUserAvatar));
-        PicVariable.pictures = pics;
+        PicVariable.pictures = pictureService.findAllByCreateDate(editor.date);
         editor.downloadOriginalImg();
     }
 
     @Test
-    public void contextLoads() throws Exception {
+    public void contextLoads() {
         List<PictureVo> pics = new ArrayList<>(2);
-        PictureVo p1 = new PictureVo("75438543", "holeski", "http://img.96weixin.com/ueditor/20190920/1568962918667079.jpg", "https://img.96weixin.com/ueditor/20200329/1585445095715927.jpg");
-        PictureVo p2 = new PictureVo("75456736", "holeskicongroo", "http://img.96weixin.com/ueditor/20190920/1568962918667079.jpg", "https://img.96weixin.com/ueditor/20200329/1585445090941980.png");
+        PictureVo p1 = new PictureVo("75438543", "sofia", "http://img.96weixin.com/ueditor/20190920/1568962918667079.jpg", "https://img.96weixin.com/ueditor/20200329/1585445095715927.jpg");
+        PictureVo p2 = new PictureVo("75456736", "lin", "http://img.96weixin.com/ueditor/20190920/1568962918667079.jpg", "https://img.96weixin.com/ueditor/20200329/1585445090941980.png");
         pics.add(p1);
         pics.add(p2);
-        PicVariable.voList = pics;
-        editor.generateFile();
+
+//        PicVariable.voList = pics;
+//        editor.generateFile();
     }
 
     @Test
