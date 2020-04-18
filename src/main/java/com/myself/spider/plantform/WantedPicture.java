@@ -6,14 +6,14 @@ import javax.persistence.*;
 
 /**
  * @Auther: Holeski
- * @Date: 2019/6/21 09:08
+ * @Date: 2020/4/18 09:08
  * @Description:
  */
 @Entity
 @Data
-public class Picture extends Base {
+public class WantedPicture extends Base {
     @Id
-    @GeneratedValue(generator = "seq_picture")
+    @GeneratedValue(generator = "seq_wanted")
     private Integer id;
     private Integer userId;
     private String illustId;
@@ -28,5 +28,6 @@ public class Picture extends Base {
     private String pixImg;
     private String createDate;
     private String rankDate;
+    private String searchKey;
 
 }

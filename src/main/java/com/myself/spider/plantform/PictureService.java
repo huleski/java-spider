@@ -16,40 +16,41 @@ import java.util.stream.Collectors;
 @Slf4j
 public class PictureService {
     @Autowired
-    private PictureRepository dao;
+    private PictureRepository pictureDao;
+    @Autowired
+    private WantedPictureRepository wantedPictureDao;
 
     public void saveAndUpdate(Picture picture) {
-        dao.save(picture);
+        pictureDao.save(picture);
     }
 
     public Picture selectById(int id) {
-        return dao.getOne(id);
+        return pictureDao.getOne(id);
     }
 
     public List<Picture> selectAll() {
-        return dao.findAll();
+        return pictureDao.findAll();
     }
 
     public void delete(Integer id) {
-        dao.deleteById(id);
+        pictureDao.deleteById(id);
     }
 
     public List<Picture> saveAll(List<Picture> pics) {
-        List list = dao.saveAll(pics);
-        return list;
+        return pictureDao.saveAll(pics);
     }
 
-    public List<Picture> saveAllUnsaved(List<Picture> pics) {
+    public List saveAllUnsaved(List<Picture> pics) {
         List<Picture> collect = pics.stream().filter(picture -> {
-            List<Picture> results = dao.findAllByIllustIdAndSort(picture.getIllustId(), picture.getSort());
+            List<Picture> results = pictureDao.findAllByIllustIdAndSort(picture.getIllustId(), picture.getSort());
             return results == null || results.size() < 1;
         }).collect(Collectors.toList());
-        List list = dao.saveAll(collect);
+        List list = pictureDao.saveAll(collect);
         log.info("保存了" + list.size() + "张图片");
         return collect;
     }
 
-    public List<Picture> findAllByCreateDate(String createDate) {
-        return dao.findAllByCreateDate(createDate);
+    public List findAllByCreateDate(String createDate) {
+        return pictureDao.findAllByCreateDate(createDate);
     }
 }

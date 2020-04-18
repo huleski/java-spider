@@ -2,18 +2,13 @@ package com.myself.spider.plantform;
 
 import lombok.Data;
 
-import javax.persistence.*;
-
 /**
  * @Auther: Holeski
  * @Date: 2019/6/21 09:08
  * @Description:
  */
-@Entity
 @Data
-public class Picture extends Base {
-    @Id
-    @GeneratedValue(generator = "seq_picture")
+public class Base {
     private Integer id;
     private Integer userId;
     private String illustId;
@@ -28,5 +23,6 @@ public class Picture extends Base {
     private String pixImg;
     private String createDate;
     private String rankDate;
+    private String searchKey;
 
 }

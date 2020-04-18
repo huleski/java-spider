@@ -55,6 +55,7 @@ public class DemoApplicationTests {
     public void today() {
         PicVariable.pictures = pictureService.findAllByCreateDate(editor.date);
         editor.downloadOriginalImg();
+        System.out.println("OK");
     }
 
     @Test

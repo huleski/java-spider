@@ -1,5 +1,7 @@
 package com.myself.spider.plantform;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.date.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,36 +24,62 @@ public class PicController {
 
     @Autowired
     private PictureService pictureService;
+    @Autowired
+    private WantedPictureService wantedPictureService;
 
     @Autowired
     private Editor editor;
 
     @RequestMapping(value = "/synchronize")
     @ResponseBody
-    public Object synchronizeArticle(@RequestBody List<Picture> pics) {
-        // 排序
-        List<Picture> collect = pics.stream().sorted(Comparator.comparing(Picture::getUser)).collect(Collectors.toList());
-        collect.forEach(picture -> picture.setCreateDate(editor.date));
-        PicVariable.pictures = pictureService.saveAllUnsaved(collect);
+    public Object synchronizeArticle(@RequestBody List<Base> pics) {
+        PicVariable.pictures = pictureService.saveAllUnsaved(savePics(pics));
         editor.downloadOriginalImg();
         return "OK";
     }
 
     @RequestMapping("/save")
     @ResponseBody
-    public String save(@RequestBody List<Picture> pics) {
-        List<Picture> collect = pics.stream().sorted(Comparator.comparing(Picture::getUser)).collect(Collectors.toList());
-        collect.forEach(picture -> picture.setCreateDate(editor.date));
-        pictureService.saveAllUnsaved(collect);
+    public String save(@RequestBody List<Base> pics) {
+        savePics(pics);
         return "OK";
     }
 
     @RequestMapping("/today")
     @ResponseBody
     public String today() {
-        PicVariable.pictures = pictureService.findAllByCreateDate(editor.date);
+        if (editor.type == Type.PICTURE) {
+            PicVariable.pictures = pictureService.findAllByCreateDate(editor.date);
+        } else {
+            PicVariable.pictures = wantedPictureService.findAllBySearchKey(editor.date);
+        }
+
         editor.downloadOriginalImg();
         return "OK";
+    }
+
+    private List savePics(List<Base> collect) {
+        if (editor.type == Type.PICTURE) {
+            collect.forEach(picture -> picture.setCreateDate(editor.date));
+            List<Picture> list = collect.stream().sorted(Comparator.comparing(Base::getUser)).map(base -> {
+                Picture picture = new Picture();
+                BeanUtil.copyProperties(base, picture);
+                return picture;
+            }).collect(Collectors.toList());
+            return pictureService.saveAllUnsaved(list);
+
+        } else {
+            collect.forEach(picture -> {
+                picture.setCreateDate(DateUtil.formatDate(new Date()));
+                picture.setSearchKey(editor.date);
+            });
+            List<WantedPicture> list = collect.stream().sorted(Comparator.comparing(Base::getUser)).map(base -> {
+                WantedPicture picture = new WantedPicture();
+                BeanUtil.copyProperties(base, picture);
+                return picture;
+            }).collect(Collectors.toList());
+            return wantedPictureService.saveAll(list);
+        }
     }
 
 }

@@ -1,6 +1,5 @@
 package com.myself.spider.plantform;
 
-import cn.hutool.core.util.ZipUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import lombok.extern.slf4j.Slf4j;
@@ -84,17 +83,18 @@ public abstract class Editor {
     @Autowired
     Configuration configuration;
 
-    public String date = "2020-04-02";
+    public Type type = Type.WANTED_PICTURE;
+    public String date = "辉夜大小姐";
 
     public synchronized void downloadSuccess() {
         if (++PicVariable.original_count >= PicVariable.pictures.size()) {
+            log.info("图片下载完成, Link Start!!!----------------------");
             try {
-                log.info("图片下载完成, Link Start!!!----------------------");
-                ZipUtil.zip(filePath + date);
+//                ZipUtil.zip(filePath + date);
 //                uploadZipPackage();
-                login();
-                uploadImage();
-                saveArticle();
+//                login();
+//                uploadImage();
+//                saveArticle();
 //                transferArticle();
                 System.exit(1);
             } catch (Exception e) {
@@ -113,7 +113,7 @@ public abstract class Editor {
 
     public abstract void transferArticle() throws Exception;
 
-    public abstract void downloadPictureSyn(Picture picture);
+    public abstract void downloadPictureSyn(Base picture);
 
     /**
      * 获取文件名的后缀

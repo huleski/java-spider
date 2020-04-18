@@ -55,14 +55,14 @@ public class OKHttpEditor extends Editor {
         PicVariable.original_count = 0;
         PicVariable.voList.clear();
         log.info("正在下载【" + PicVariable.pictures.size() + "】张图片.................................");
-        for (Picture picture : PicVariable.pictures) {
+        for (Base picture : PicVariable.pictures) {
             String url = picture.getOriginalImg().replace("https://i.pximg.net", local);
             File parentPath = new File(filePath + date);
             if (!parentPath.exists()) {
                 parentPath.mkdirs();
             }
             String pictureName = picture.getUser().replaceAll("[//\\\\:*?\"<>|]", "") +
-                    " •「" + picture.getIllustId() + "(" + picture.getSort() + ")」" + "." + getExtension(url);
+                    "_" + picture.getIllustId() + "_p" + picture.getSort() + "." + getExtension(url);
             File file = new File(parentPath, pictureName);
             if (file.exists()) {
                 PicVariable.voList.add(new PictureVo(picture.getIllustId(), picture.getUser(), picture.getUserAvatar().replace("https://i.pximg.net", cat), file));
@@ -258,7 +258,7 @@ public class OKHttpEditor extends Editor {
      * 文件同步下载
      */
     @Override
-    public void downloadPictureSyn(Picture picture) {
+    public void downloadPictureSyn(Base picture) {
         String url = picture.getFixedImg().replace("https://i.pximg.net", local);
         //构建request对象
         Request request = new Request.Builder().url(url).build();
