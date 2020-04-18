@@ -75,3 +75,17 @@ document.getElementsByClassName('arrow-right')[0].onclick=function () {
     date=changeDateBySelect(1, date)
     restart(date)
 }
+
+$("#search").keypress(function (e) {
+    if (e.which == 13) {
+        document.getElementById("waterfall").innerHTML = '';
+        document.getElementById('loader').style.top = "0px";
+        Lightbox.prototype.index = 0;
+        columnH = [],
+        page = 1,
+        flag = false;
+        ajax("get", url + 'illustrations', `illustType=illust&searchType=original&maxSanityLevel=6&page=${page}&pageSize=30&keyword=`+ this.value, showlist, true);
+        var info = document.getElementById('info');
+        info.innerHTML = '';
+    }
+});

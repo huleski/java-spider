@@ -138,7 +138,7 @@ function showlist(result) {
         content = document.getElementById("waterfall"),
         minIndex;
     var url;
-    if (dataArr.length > 0) {
+    if (dataArr && dataArr.length > 0) {
         let index = 0;
         for(let i = 0; i < dataArr.length; i ++){
             let item = dataArr[i];
@@ -282,7 +282,11 @@ function showdate() {
         if (!flag) {
             flag = true;
             page++;
-            ajax("get", url + 'ranks', `page=${page}&date=` + changeDateBySelect() + `&mode=${selectMode}`, showlist, true);
+            if ($("#search").val() != '') {
+                ajax("get", url + 'illustrations', `illustType=illust&searchType=original&maxSanityLevel=6&page=${page}&pageSize=30&keyword=`+ $("#search").val(), showlist, true);
+            } else {
+                ajax("get", url + 'ranks', `page=${page}&date=` + changeDateBySelect() + `&mode=${selectMode}`, showlist, true);
+            }
         }
     }
 }
@@ -293,9 +297,8 @@ function restart(date) {
     document.title = `${date} ${selectMode}排行`;
     Lightbox.prototype.index = 0;
     columnH = [],
-        page = 1,
-        flag = false;
-    console.log(changeDateBySelect(0, date));
+    page = 1,
+    flag = false;
     ajax("get", url + 'ranks', `page=${page}&date=${date}&mode=${selectMode}`, showlist, true);
     var info = document.getElementById('info');
     info.innerHTML = '';
