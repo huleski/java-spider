@@ -18,7 +18,9 @@ public class WantedPictureService {
     private WantedPictureRepository wantedPictureDao;
 
     public List<WantedPicture> saveAll(List<WantedPicture> pics) {
-        return wantedPictureDao.saveAll(pics);
+        pics = wantedPictureDao.saveAll(pics);
+        log.info("保存了" + pics.size() + "张图片");
+        return pics;
     }
 
     public List findAllByCreateDate(String createDate) {
