@@ -73,7 +73,7 @@ public class PicController {
                 picture.setCreateDate(DateUtil.formatDate(new Date()));
                 picture.setSearchKey(editor.date);
             });
-            List<WantedPicture> list = collect.stream().sorted(Comparator.comparing(Base::getUser)).map(base -> {
+            List<WantedPicture> list = collect.stream().distinct().sorted(Comparator.comparing(Base::getUser)).map(base -> {
                 WantedPicture picture = new WantedPicture();
                 BeanUtil.copyProperties(base, picture);
                 return picture;
