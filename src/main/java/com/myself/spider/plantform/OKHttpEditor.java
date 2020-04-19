@@ -179,7 +179,7 @@ public class OKHttpEditor extends Editor {
         RequestBody formBody = new FormBody.Builder()
                 .add("cate_id", "0")
                 .add("id", "6092731")
-                .add("name", "【每日精选】" + date + " 精选图集")
+                .add("name", type == Type.PICTURE ? "【每日精选】" + date + " 精选图集" : "【留言精选】" + date)
                 .add("summary", "精选图集")
                 .add("link", lanzouShareUrl)
                 .add("thumbnail", thumbnail)

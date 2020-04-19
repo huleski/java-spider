@@ -1,5 +1,6 @@
 package com.myself.spider;
 
+import cn.hutool.core.util.IdUtil;
 import com.myself.spider.plantform.Editor;
 import com.myself.spider.plantform.PicVariable;
 import com.myself.spider.plantform.PictureService;
@@ -72,7 +73,7 @@ public class DemoApplicationTests {
 
     @Test
     public void testCompress() throws Exception {
-        editor.uploadZipPackage();
+        System.out.println(IdUtil.randomUUID());
     }
 
 }

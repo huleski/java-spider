@@ -1,5 +1,7 @@
 package com.myself.spider.plantform;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.IdUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,7 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -84,11 +87,12 @@ public abstract class Editor {
     Configuration configuration;
 
     public Type type = Type.WANTED_PICTURE;
-    public String date = "辉夜大小姐";
+    public String date = IdUtil.randomUUID();
 
     public synchronized void downloadSuccess() {
         if (++PicVariable.original_count >= PicVariable.pictures.size()) {
-            log.info("图片下载完成, Link Start!!!----------------------");
+//            log.info("图片下载完成, Link Start!!!----------------------");
+            log.error("执行完毕时间: " + DateUtil.formatDateTime(new Date()));
             try {
 //                ZipUtil.zip(filePath + date);
 //                uploadZipPackage();
@@ -96,7 +100,7 @@ public abstract class Editor {
 //                uploadImage();
 //                saveArticle();
 //                transferArticle();
-                System.exit(1);
+//                System.exit(1);
             } catch (Exception e) {
                 log.error("操作失败", e);
             }
@@ -131,6 +135,7 @@ public abstract class Editor {
 
     /**
      * 压缩图片
+     *
      * @param file
      */
     void thumbnailImage(File file) {

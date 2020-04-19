@@ -38,7 +38,7 @@ server:
     min-spare-threads: 30
 
 logging:
-  level:
-    com.myself.spider: debug
-    org.springframework: WARN
-    org.spring.springboot.dao: debug
+  level: error
+#    com.myself.spider: debug
+#    org.springframework: WARN
+#    org.spring.springboot.dao: debug

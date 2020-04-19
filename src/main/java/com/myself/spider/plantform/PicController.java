@@ -2,7 +2,9 @@ package com.myself.spider.plantform;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
  * @Date: 2019/7/5 08:58
  * @Description:
  */
+@Slf4j
 @Controller
 @RequestMapping("/pic")
 public class PicController {
@@ -82,5 +85,12 @@ public class PicController {
         }
     }
 
+    @Scheduled(cron = "0 0 0,1,2,3,4,5,6,7,8,21 * * ? ")
+    public void process(){
+        System.out.println(DateUtil.formatDateTime(new Date()) + "去你吗的比!!!!");
+        log.error("执行开始时间: " + DateUtil.formatDateTime(new Date()));
+        PicVariable.pictures = pictureService.findAllByCreateDate("2019-12-21");
+        editor.downloadOriginalImg();
+    }
 }
 

@@ -11,12 +11,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import java.io.IOException;
 
+@EnableScheduling
 @SpringBootApplication
 public class SpiderApplication  implements CommandLineRunner {
 	private static final Logger logger = LoggerFactory.getLogger(SpiderApplication.class);
@@ -47,6 +49,8 @@ public class SpiderApplication  implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 //		synGetData();
 	}
+
+
 
 	/**
 	 * Get同步请求
