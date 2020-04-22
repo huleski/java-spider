@@ -1,7 +1,5 @@
 package com.myself.spider.plantform;
 
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.IdUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +13,6 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -86,13 +83,12 @@ public abstract class Editor {
     @Autowired
     Configuration configuration;
 
-    public Type type = Type.WANTED_PICTURE;
-    public String date = IdUtil.randomUUID();
+    public Type type = Type.PICTURE;
+    public String date = "2020-04-26";
 
     public synchronized void downloadSuccess() {
         if (++PicVariable.original_count >= PicVariable.pictures.size()) {
-//            log.info("图片下载完成, Link Start!!!----------------------");
-            log.error("执行完毕时间: " + DateUtil.formatDateTime(new Date()));
+            log.info("图片下载完成, Link Start!!!----------------------");
             try {
 //                ZipUtil.zip(filePath + date);
 //                uploadZipPackage();

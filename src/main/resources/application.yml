@@ -23,7 +23,7 @@ spring:
     active: key
   jpa:
     database-platform: com.myself.spider.plantform.SQLiteDialect
-    show-sql: true
+    show-sql: false
     generate-ddl: true
     open-in-view: true
 
@@ -38,7 +38,8 @@ server:
     min-spare-threads: 30
 
 logging:
-  level: error
-#    com.myself.spider: debug
-#    org.springframework: WARN
-#    org.spring.springboot.dao: debug
+  level:
+#    root: warn
+    com.myself.spider: debug
+    org.springframework: WARN
+    org.spring.springboot.dao: debug

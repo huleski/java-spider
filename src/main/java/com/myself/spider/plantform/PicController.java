@@ -85,12 +85,12 @@ public class PicController {
         }
     }
 
-    @Scheduled(cron = "0 0 0,1,2,3,4,5,6,7,8,21 * * ? ")
-    public void process(){
-        System.out.println(DateUtil.formatDateTime(new Date()) + "去你吗的比!!!!");
-        log.error("执行开始时间: " + DateUtil.formatDateTime(new Date()));
-        PicVariable.pictures = pictureService.findAllByCreateDate("2019-12-21");
-        editor.downloadOriginalImg();
+    @Scheduled(cron = "0 0 3 * * ? ")
+    public void process() throws Exception{
+        editor.date = "2019-12-24";
+        today();
+        Thread.sleep(1000 * 60 * 3);
+
     }
 }
 
