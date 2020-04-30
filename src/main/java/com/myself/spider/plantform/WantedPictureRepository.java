@@ -17,4 +17,7 @@ public interface WantedPictureRepository extends JpaRepository<WantedPicture,Int
     List<WantedPicture> findAllBySearchKey(String SearchKey);
 
     List<WantedPicture> findAllByCreateDate(String createDate);
+
+    List<WantedPicture> findAllByIllustIdAndSortAndSearchKey(String illustId, Integer sort, String searchKey);
+
 }

@@ -4,7 +4,6 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -81,16 +80,18 @@ public class PicController {
                 BeanUtil.copyProperties(base, picture);
                 return picture;
             }).collect(Collectors.toList());
-            return wantedPictureService.saveAll(list);
+            return wantedPictureService.saveAllUnsaved(list);
         }
     }
 
-    @Scheduled(cron = "0 0 3 * * ? ")
-    public void process() throws Exception{
-        editor.date = "2019-12-24";
+//    @Scheduled(cron = "0 0 3 * * ? ")
+    public void process() throws Exception {
+        editor.date = "2020-05-08";
         today();
-        Thread.sleep(1000 * 60 * 3);
+        Thread.sleep(1000 * 60 * 6);
 
+
+        System.exit(-1);
     }
 }
 

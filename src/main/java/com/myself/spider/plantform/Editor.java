@@ -84,22 +84,22 @@ public abstract class Editor {
     Configuration configuration;
 
     public Type type = Type.PICTURE;
-    public String date = "2020-04-26";
+    public String date = "2020-05-02";
 
     public synchronized void downloadSuccess() {
         if (++PicVariable.original_count >= PicVariable.pictures.size()) {
+//                uploadZipPackage();
+//                transferArticle();
             log.info("图片下载完成, Link Start!!!----------------------");
             try {
 //                ZipUtil.zip(filePath + date);
-//                uploadZipPackage();
 //                login();
 //                uploadImage();
 //                saveArticle();
-//                transferArticle();
-//                System.exit(1);
             } catch (Exception e) {
                 log.error("操作失败", e);
             }
+//                System.exit(1);
         }
     }
 

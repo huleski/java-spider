@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Auther: Holeski
@@ -29,5 +30,15 @@ public class WantedPictureService {
 
     public List findAllBySearchKey(String searchKey) {
         return wantedPictureDao.findAllBySearchKey(searchKey);
+    }
+
+    public List saveAllUnsaved(List<WantedPicture> list) {
+        List<WantedPicture> collect = list.stream().filter(picture -> {
+            List<WantedPicture> results = wantedPictureDao.findAllByIllustIdAndSortAndSearchKey(picture.getIllustId(), picture.getSort(), picture.getSearchKey());
+            return results == null || results.size() < 1;
+        }).collect(Collectors.toList());
+        list = wantedPictureDao.saveAll(collect);
+        log.info("保存了" + list.size() + "张图片");
+        return list;
     }
 }
