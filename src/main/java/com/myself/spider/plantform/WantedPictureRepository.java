@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Component
 public interface WantedPictureRepository extends JpaRepository<WantedPicture,Integer>, JpaSpecificationExecutor<WantedPicture>, Serializable {
-    List<WantedPicture> findAllBySearchKey(String SearchKey);
+    List<WantedPicture> findAllBySearchKeyOrderByUser(String SearchKey);
 
     List<WantedPicture> findAllByCreateDate(String createDate);
 

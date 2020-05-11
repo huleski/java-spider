@@ -29,7 +29,7 @@ public class WantedPictureService {
     }
 
     public List findAllBySearchKey(String searchKey) {
-        return wantedPictureDao.findAllBySearchKey(searchKey);
+        return wantedPictureDao.findAllBySearchKeyOrderByUser(searchKey);
     }
 
     public List saveAllUnsaved(List<WantedPicture> list) {

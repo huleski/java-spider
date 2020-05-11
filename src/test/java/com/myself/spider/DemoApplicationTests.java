@@ -11,7 +11,10 @@ import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -19,8 +22,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-//@SpringBootTest
-//@RunWith(SpringRunner.class)
+@SpringBootTest
+@RunWith(SpringRunner.class)
 @Slf4j
 public class DemoApplicationTests {
     private final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
@@ -60,15 +63,16 @@ public class DemoApplicationTests {
     }
 
     @Test
-    public void contextLoads() {
+    public void contextLoads() throws Exception {
         List<PictureVo> pics = new ArrayList<>(2);
         PictureVo p1 = new PictureVo("75438543", "sofia", "http://img.96weixin.com/ueditor/20190920/1568962918667079.jpg", "https://img.96weixin.com/ueditor/20200329/1585445095715927.jpg");
         PictureVo p2 = new PictureVo("75456736", "lin", "http://img.96weixin.com/ueditor/20190920/1568962918667079.jpg", "https://img.96weixin.com/ueditor/20200329/1585445090941980.png");
         pics.add(p1);
         pics.add(p2);
 
-//        PicVariable.voList = pics;
-//        editor.generateFile();
+        PicVariable.voList = pics;
+        editor.login();
+        editor.saveArticle();
     }
 
     @Test

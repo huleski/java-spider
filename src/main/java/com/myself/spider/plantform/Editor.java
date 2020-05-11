@@ -1,5 +1,6 @@
 package com.myself.spider.plantform;
 
+import cn.hutool.core.util.ZipUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import lombok.extern.slf4j.Slf4j;
@@ -84,7 +85,7 @@ public abstract class Editor {
     Configuration configuration;
 
     public Type type = Type.PICTURE;
-    public String date = "2020-05-02";
+    public String date = "2020-05-12";
 
     public synchronized void downloadSuccess() {
         if (++PicVariable.original_count >= PicVariable.pictures.size()) {
@@ -92,14 +93,14 @@ public abstract class Editor {
 //                transferArticle();
             log.info("图片下载完成, Link Start!!!----------------------");
             try {
-//                ZipUtil.zip(filePath + date);
-//                login();
-//                uploadImage();
-//                saveArticle();
+                ZipUtil.zip(filePath + date);
+                login();
+                uploadImage();
+                saveArticle();
             } catch (Exception e) {
                 log.error("操作失败", e);
             }
-//                System.exit(1);
+                System.exit(1);
         }
     }
 

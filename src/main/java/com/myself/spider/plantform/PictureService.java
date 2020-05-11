@@ -51,6 +51,6 @@ public class PictureService {
     }
 
     public List findAllByCreateDate(String createDate) {
-        return pictureDao.findAllByCreateDate(createDate);
+        return pictureDao.findAllByCreateDateOrderByUser(createDate);
     }
 }

@@ -1,7 +1,6 @@
 spring:
   datasource:
     driver-class-name: org.sqlite.JDBC
-    url: jdbc:sqlite:C://Users/Holeski/OneDrive/附件/spider.db
     username: root
     password: 123456
   freemarker:

@@ -86,12 +86,12 @@ public class PicController {
 
 //    @Scheduled(cron = "0 0 3 * * ? ")
     public void process() throws Exception {
-        editor.date = "2020-05-08";
+//        editor.date = "2020-05-09";
         today();
-        Thread.sleep(1000 * 60 * 6);
+//        Thread.sleep(1000 * 60 * 2);
 
 
-        System.exit(-1);
+//        System.exit(-1);
     }
 }
 

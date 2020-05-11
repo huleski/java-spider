@@ -15,7 +15,7 @@ import java.util.List;
 @Component
 public interface PictureRepository extends JpaRepository<Picture,Integer>, JpaSpecificationExecutor<Picture>, Serializable {
 
-    List<Picture> findAllByCreateDate(String createDate);
+    List<Picture> findAllByCreateDateOrderByUser(String createDate);
 
     List<Picture> findAllByIllustIdAndSort(String illustId, Integer sort);
 }
