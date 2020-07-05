@@ -269,7 +269,7 @@ public class OKHttpEditor extends Editor {
             }
 
             String pictureName = picture.getUser().replaceAll("[//\\\\:*?\"<>|]", "") +
-                    " •「" + picture.getIllustId() + "(" + picture.getSort() + ")」" + "." + getExtension(url);
+                    "_" + picture.getIllustId() + "_p" + picture.getSort() + "." + getExtension(url);
             File parentPath = new File(filePath + date);
             if (!parentPath.exists()) {
                 parentPath.mkdirs();
